@@ -1,11 +1,14 @@
-const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const bodyParser = require("body-parser");
+import express from "express";
+import { PrismaClient } from "@prisma/client";
+import bodyParser from "body-parser";
+import { ApolloServer } from "apollo-server-express";
 
-const app = express();
+import { typeDefs, resolvers } from "./schema/index.js";
+
 const prisma = new PrismaClient();
 const port = 5000;
 
+const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -13,8 +16,20 @@ app.use(
   })
 );
 
+let apolloServer = null;
+async function startServer() {
+  apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+}
+startServer();
+
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
+  console.log(`gql path is ${apolloServer.graphqlPath}`);
 });
 
 app.get("/", async (req, res) => {

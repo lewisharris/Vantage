@@ -12,10 +12,10 @@
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@apollo/client@^3.8.4":
-  version "3.8.4"
-  resolved "https://registry.npmjs.org/@apollo/client/-/client-3.8.4.tgz"
-  integrity sha512-QFXE4ylSHUa6LgYoOGsPysJCm4YJOOM1NwHyF6msZdZXIerqUVpLvxQOdQEXgS0RWvYiBMC1wGOWKzJKSWBdAg==
+"@apollo/client@^3.8.0-rc.2", "@apollo/client@>=3.8.0-rc || ^3.8.0":
+  version "3.8.0-rc.2"
+  resolved "https://registry.npmjs.org/@apollo/client/-/client-3.8.0-rc.2.tgz"
+  integrity sha512-OQhMbYhNscVwqfxb9diOZpra4m4Vr+CbzkHZGdg51+BADzUeQCEaQyeKhClJqh1HAH3kIqRf+pD9otzuMDhcSg==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/context" "^0.7.3"
@@ -30,6 +30,15 @@
     ts-invariant "^0.10.3"
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
+
+"@apollo/experimental-nextjs-app-support@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.npmjs.org/@apollo/experimental-nextjs-app-support/-/experimental-nextjs-app-support-0.4.3.tgz"
+  integrity sha512-UrgLMUIW7SFmeJyLvqh0E8KRvo6Nd/zzbUFt0ENT3BRa7z7kGsCk7I+kZEZEAn13nqlTC3M4VPS6tOfvtLFhxQ==
+  dependencies:
+    server-only "^0.0.1"
+    superjson "^1.12.2"
+    ts-invariant "^0.10.3"
 
 "@babel/runtime@^7.20.7":
   version "7.22.15"
@@ -594,6 +603,13 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+copy-anything@^3.0.2:
+  version "3.0.5"
+  resolved "https://registry.npmjs.org/copy-anything/-/copy-anything-3.0.5.tgz"
+  integrity sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==
+  dependencies:
+    is-what "^4.1.8"
 
 cross-spawn@^7.0.2:
   version "7.0.3"
@@ -1543,6 +1559,11 @@ is-weakset@^2.0.1:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.1"
 
+is-what@^4.1.8:
+  version "4.1.15"
+  resolved "https://registry.npmjs.org/is-what/-/is-what-4.1.15.tgz"
+  integrity sha512-uKua1wfy3Yt+YqsD6mTUEa2zSi3G1oPlqTflgaPJ7z63vUGN5pxFpnQfeSLMFnJDEsdvOtkp1rUWkYjB4YfhgA==
+
 isarray@^2.0.5:
   version "2.0.5"
   resolved "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz"
@@ -1735,7 +1756,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next@13.5.2:
+next@^13.4.1, next@13.5.2:
   version "13.5.2"
   resolved "https://registry.npmjs.org/next/-/next-13.5.2.tgz"
   integrity sha512-vog4UhUaMYAzeqfiAAmgB/QWLW7p01/sg+2vn6bqc/CxHFYizMzLv6gjxKzl31EVFkfl/F+GbxlKizlkTE9RdA==
@@ -2047,7 +2068,7 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-"react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.8.0, react@18.2.0:
+"react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18, react@^18.0.0, react@^18.2.0, "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", react@>=16.8.0, react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -2189,6 +2210,11 @@ semver@^7.5.4:
   dependencies:
     lru-cache "^6.0.0"
 
+server-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/server-only/-/server-only-0.0.1.tgz"
+  integrity sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==
+
 set-function-name@^2.0.0, set-function-name@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/set-function-name/-/set-function-name-2.0.1.tgz"
@@ -2312,6 +2338,13 @@ sucrase@^3.32.0:
     mz "^2.7.0"
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
+
+superjson@^1.12.2:
+  version "1.13.3"
+  resolved "https://registry.npmjs.org/superjson/-/superjson-1.13.3.tgz"
+  integrity sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==
+  dependencies:
+    copy-anything "^3.0.2"
 
 supports-color@^7.1.0:
   version "7.2.0"
