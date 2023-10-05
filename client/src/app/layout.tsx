@@ -1,14 +1,11 @@
+"use client";
 import "./globals.css";
-import type { Metadata } from "next";
+import ContextProvider from "../context/ContextProvider";
+
 import { Inter } from "next/font/google";
 import Navbar from "../components/layout/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "VANTAGE",
-  description: "Connect with customers",
-};
 
 export default function RootLayout({
   children,
@@ -18,8 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <ContextProvider>
+          <Navbar />
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );

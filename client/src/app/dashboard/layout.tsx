@@ -19,12 +19,9 @@ export default function DashboardLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Navbar />
         <div className="bg-slate-100 flex flex-row max-h-screen w-screen">
           <DashboardNavigation />
-          <div className="items-center flex flex-row text-xl absolute top-0 right-0 p-4 bg-white w-screen justify-between h-14">
-            <div>VANTAGE</div>
-            <button className="text-sm">Log out</button>
-          </div>
           {children}
         </div>
       </body>
