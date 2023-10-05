@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import bodyParser from "body-parser";
 import { ApolloServer } from "apollo-server-express";
@@ -6,7 +7,7 @@ import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema/index.js";
 
 const prisma = new PrismaClient();
-const port = 5000;
+const port = 4000;
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,6 +16,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(cors("*"));
 
 let apolloServer = null;
 async function startServer() {
@@ -39,11 +42,6 @@ app.get("/", async (req, res) => {
   } catch (err) {
     return res.status(502).json("No companies found in database");
   }
-});
-
-app.post("/", async (req, res) => {
-  const newUser = await prisma.Company.create({ data: req.body });
-  res.json(newUser);
 });
 
 app.put("/:id", async (req, res) => {

@@ -8,23 +8,22 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https:localhost:4000/graphql",
+  uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
 });
 
 client
   .query({
     query: gql`
-      query GetCompanies {
-        company {
-          id
+      query {
+        companies {
           username
           email
         }
       }
     `,
   })
-  .then((result) => console.log(result));
+  .then((res) => console.log(res + "result"));
 
 type Props = { children: React.ReactNode };
 
