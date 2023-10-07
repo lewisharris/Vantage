@@ -14,8 +14,9 @@ model Company {
   email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Teams     Team[]
-  Users     User[]
+  teams     Team[]
+  users     User[]
+  transactions Transaction[]
 }
 
 model Team {
@@ -24,6 +25,7 @@ model Team {
   location  String?
   company   Company @relation(fields: [companyId], references: [id])
   companyId String
+  transactions Transaction[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -37,4 +39,17 @@ model User {
   last_name String
   username String @unique
   location String
+  transactions Transaction[]
+}
+
+model Transaction {
+  id String @id @default(uuid()) @unique
+  company Company @relation(fields: [companyId], references:[id])
+  companyId String
+  team Team @relation(fields: [teamId], references:[id])
+  teamId String
+  user User @relation(fields:[userId],references:[id])
+  userId String
+  createdAt DateTime  @default(now())
+  isApproved Boolean @default(false)
 }

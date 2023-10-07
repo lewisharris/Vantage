@@ -3,11 +3,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const typeDefs = gql`
-  type Company {
+  type companies {
     id: ID
     username: String!
     email: String!
     teams: [Team!]
+  }
+
+  type Company {
+    id: ID
+    username: String!
+    email: String!
+    Teams: [Team!]
   }
 
   type Team {
@@ -35,7 +42,10 @@ const resolvers = {
     company: async (_, args) => {
       const id = args.id;
       try {
-        return await prisma.Company.findUnique({ where: { id: id } });
+        return await prisma.Company.findUnique({
+          where: { id: id },
+          include: { Teams: true },
+        });
       } catch (err) {
         return err;
       }
