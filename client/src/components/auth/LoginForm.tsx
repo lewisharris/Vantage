@@ -4,10 +4,27 @@ import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { gql, useQuery } from "@apollo/client";
 
 type Props = {};
 
 export default function LoginForm({}: Props) {
+  const GET_COMPANIES = gql`
+    query getCompanies {
+      companies {
+        email
+        username
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(GET_COMPANIES);
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
+  const companies = data;
+  console.log(companies);
+
   return (
     <AnimatePresence>
       <motion.div
