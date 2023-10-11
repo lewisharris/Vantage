@@ -36,7 +36,7 @@ const typeDefs = gql`
     company(id: ID!): Company!
   }
   type Mutation {
-    createCompany(input: CreateCompanyInput!): Company
+    createCompany(input: CreateCompanyInput!): Company!
     updateCompanyUsername(input: UpdateCompanyUsernameInput!): Company!
   }
 `;
@@ -67,23 +67,28 @@ const resolvers = {
   Mutation: {
     createCompany: async (parent, args) => {
       try {
-        let { username, email, password } = args;
+        let { username, email, password } = args.input;
+        // if missing credentials notify user
+        // check for existing user
+        const existingUser = await prisma.Company.findFirst({
+          where: { email: email },
+        });
+        if (existingUser) {
+          throw new Error("Email is already in use");
+        }
         //Password hashing
         const salt = await bcrypt.genSalt(10);
-        hashedPassword = await bcrypt.hash(password, salt);
+        password = await bcrypt.hash(password, salt);
         const newCompany = await prisma.company.create({
-          data: { username, hashedPassword, email },
+          data: { username, password, email },
         });
+        // generate token
+        // return user and token session
         return newCompany;
       } catch (err) {
         console.log(err);
       }
     },
-
-    // if missing credentials notify user
-    // check for existing user
-    // generate token
-    // return user and token session
 
     updateCompanyUsername: async (_, args) => {
       const { id, newUsername } = args.input;
