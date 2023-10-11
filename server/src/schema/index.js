@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 const typeDefs = gql`
@@ -66,17 +67,30 @@ const resolvers = {
   Mutation: {
     createCompany: async (parent, args) => {
       try {
-        const newCompany = await prisma.company.create({ data: args.input });
+        let { username, email, password } = args;
+        //Password hashing
+        const salt = await bcrypt.genSalt(10);
+        hashedPassword = await bcrypt.hash(password, salt);
+        const newCompany = await prisma.company.create({
+          data: { username, hashedPassword, email },
+        });
         return newCompany;
       } catch (err) {
-        return err;
+        console.log(err);
       }
     },
+
+    // if missing credentials notify user
+    // check for existing user
+    // generate token
+    // return user and token session
+
     updateCompanyUsername: async (_, args) => {
+      const { id, newUsername } = args.input;
       try {
         const updatedUsername = await prisma.company.update({
-          where: { id: args.input.id },
-          data: { username: args.input.newUsername },
+          where: { id: id },
+          data: { username: newUsername },
         });
         return updatedUsername;
       } catch (err) {

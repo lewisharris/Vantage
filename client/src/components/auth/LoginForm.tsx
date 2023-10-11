@@ -18,11 +18,10 @@ export default function LoginForm({}: Props) {
     }
   `;
 
-  const { loading, error, data } = useQuery(GET_COMPANIES);
-  if (loading) return "Loading...";
+  const { loading, error, data: userData } = useQuery(GET_COMPANIES);
   if (error) return `Error! ${error.message}`;
 
-  const companies = data;
+  const companies = userData;
   console.log(companies);
 
   return (
