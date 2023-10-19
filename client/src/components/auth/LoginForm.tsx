@@ -20,6 +20,12 @@ export default function LoginForm({}: Props) {
       }
     }
   `;
+  const REGISTER_USER_MUTATION = gql`
+    mutation registerUser($input: RegisterUserInput!) {
+      id
+      first_name
+    }
+  `;
 
   const GET_COMPANIES_QUERY = gql`
     query {
@@ -47,6 +53,18 @@ export default function LoginForm({}: Props) {
     }
   });
 
+  const [
+    createNewUser,
+    { loading: newUserLoading, data: newUserData, error: newUserError }
+  ] = useMutation(CREATE_COMPANY_MUTATION, {
+    errorPolicty: "all",
+    onCompleted: data => {
+      if (data) {
+        console.log(`${newUserData} is the data`);
+      }
+    }
+  });
+
   return (
     <>
       {companyError ? <div>{companyError.message}</div> : null}
@@ -68,6 +86,24 @@ export default function LoginForm({}: Props) {
         }}
       >
         Get Companies
+      </button>
+
+      <button
+        onClick={() => {
+          createNewUser({
+            variables: {
+              input: {
+                email: "newcustomer@email.com",
+                companyId: "15c4849e-b614-4d39-a01c-90a59e5790ab",
+                first_name: "lewis",
+                last_name: "harris",
+                access: "USER"
+              }
+            }
+          });
+        }}
+      >
+        Create New User
       </button>
 
       <AnimatePresence>
