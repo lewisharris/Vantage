@@ -30,19 +30,21 @@ export default function LoginForm({}: Props) {
     }
   `;
 
-  const [getCompanies, { loading, data, error }] =
-    useLazyQuery(GET_COMPANIES_QUERY);
+  const [getCompanies, { loading, data, error }] = useLazyQuery(
+    GET_COMPANIES_QUERY
+  );
+  console.log(data);
 
   const [
     createCompany,
-    { loading: companyLoading, data: companyData, error: companyError },
+    { loading: companyLoading, data: companyData, error: companyError }
   ] = useMutation(CREATE_COMPANY_MUTATION, {
     errorPolicy: "all",
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (data) {
         console.log(`${data} is the data`);
       }
-    },
+    }
   });
 
   return (
@@ -52,8 +54,8 @@ export default function LoginForm({}: Props) {
         onClick={() => {
           createCompany({
             variables: {
-              input: { name: "CompanySeven" },
-            },
+              input: { name: "CompanyEight" }
+            }
           });
         }}
       >
@@ -78,7 +80,7 @@ export default function LoginForm({}: Props) {
         >
           <Formik
             initialValues={{ email: "", password: "" }}
-            validate={(values) => {
+            validate={values => {
               const errors = {};
               if (!values.email) {
                 errors.email = "Email required!";
@@ -103,7 +105,7 @@ export default function LoginForm({}: Props) {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting,
+              isSubmitting
             }) => (
               <form
                 onSubmit={handleSubmit}

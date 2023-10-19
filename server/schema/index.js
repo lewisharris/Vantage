@@ -76,13 +76,13 @@ const resolvers = {
       try {
         const company = await prisma.Company.findFirst({
           where: { email: email },
-          include: { teams: true },
+          include: { teams: true }
         });
         return company;
       } catch (err) {
         throw new ApolloError("Failed to find user", "FAILED_TO_FIND_COMPANY");
       }
-    },
+    }
   },
   Mutation: {
     createNewCompany: async (_, args) => {
@@ -91,7 +91,7 @@ const resolvers = {
         // if missing credentials notify user
         // check for existing user
         const existingCompany = await prisma.company.findFirst({
-          where: { name: name },
+          where: { name: name }
         });
         if (existingCompany) {
           throw new UserInputError("Company already exists");
@@ -100,7 +100,7 @@ const resolvers = {
         // const salt = await bcrypt.genSalt(10);
         // password = await bcrypt.hash(password, salt);
         const newCompany = await prisma.company.create({
-          data: { name },
+          data: { name }
         });
         // generate token
         // return user and token session
@@ -114,7 +114,7 @@ const resolvers = {
       const { email, password } = args.input;
       try {
         const user = await prisma.company.findUnique({
-          where: { email: email },
+          where: { email: email }
         });
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
@@ -125,8 +125,8 @@ const resolvers = {
       } catch (err) {
         return err;
       }
-    },
-  },
+    }
+  }
 };
 
 export { typeDefs, resolvers };
