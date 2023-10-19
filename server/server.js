@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
@@ -23,7 +23,7 @@ let apolloServer = null;
 async function startServer() {
   apolloServer = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
