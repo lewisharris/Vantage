@@ -4,42 +4,70 @@ import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 
 type Props = {};
 
 export default function LoginForm({}: Props) {
-  const NEW_COMPANY_MUTATION = gql`
-    mutation createCompany($input: CreateCompanyInput!) {
-      createCompany(input: $input) {
+  const CREATE_COMPANY_MUTATION = gql`
+    mutation createCompany($input: CreateNewCompanyInput!) {
+      createNewCompany(input: $input) {
         id
-        username
-        email
+        name
+        teams {
+          id
+        }
       }
     }
   `;
 
-  const [createUser, { data, loading, error }] =
-    useMutation(NEW_COMPANY_MUTATION);
-  console.log(data);
+  const GET_COMPANIES_QUERY = gql`
+    query {
+      companies {
+        id
+        name
+      }
+    }
+  `;
+
+  const [getCompanies, { loading, data, error }] =
+    useLazyQuery(GET_COMPANIES_QUERY);
+
+  const [
+    createCompany,
+    { loading: companyLoading, data: companyData, error: companyError },
+  ] = useMutation(CREATE_COMPANY_MUTATION, {
+    errorPolicy: "all",
+    onCompleted: (data) => {
+      if (data) {
+        console.log(`${data} is the data`);
+      }
+    },
+  });
+
   return (
     <>
-      <div>{loading ? "loading" : null}</div>
+      {companyError ? <div>{companyError.message}</div> : null}
       <button
         onClick={() => {
-          createUser({
+          createCompany({
             variables: {
-              input: {
-                username: "figment",
-                email: "email6@user.com",
-                password: "password",
-              },
+              input: { name: "CompanySeven" },
             },
           });
         }}
       >
         Create Company
       </button>
+
+      <button
+        onClick={() => {
+          getCompanies();
+        }}
+      >
+        Get Companies
+      </button>
+
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0 }}

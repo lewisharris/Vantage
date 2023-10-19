@@ -9,7 +9,7 @@ export default function Navbar({}: Props) {
   const pathname = usePathname();
   const isLoggedIn = false;
   return (
-    <div className="flex flex-row justify-end p-4 h-12">
+    <div className="flex flex-row justify-end p-4 h-14 fixed top-0 left-0 w-full bg-white">
       <Link
         href="/"
         className="text-2xl text-bold mt-1 sm:mt-auto text-violet-900 mr-auto items-center"

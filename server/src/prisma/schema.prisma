@@ -9,9 +9,7 @@ datasource db {
 
 model Company {
   id        String   @id @default(uuid())
-  username  String 
-  password  String
-  email     String @unique
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   teams     Team[]
@@ -32,6 +30,7 @@ model Team {
 
 model User {
   id String @id @default(uuid())
+  token String
   company Company @relation(fields: [companyId], references:[id])
   companyId String
   email String @unique
@@ -39,6 +38,7 @@ model User {
   last_name String
   username String @unique
   location String
+  admin Boolean
   transactions Transaction[]
 }
 
