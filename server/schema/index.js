@@ -35,13 +35,19 @@ const typeDefs = gql`
     name: String!
   }
 
-  input CreateNewUserInput {
+  enum AccessType {
+    USER
+    ADMIN
+    SUPER_ADMIN
+  }
+
+  input RegisterUserInput {
     email: String!
+    companyId: String!
     first_name: String!
-    company: String!
     last_name: String!
     username: String
-    admin: Boolean!
+    access: AccessType!
   }
 
   input LoginUserInput {
@@ -56,7 +62,7 @@ const typeDefs = gql`
 
   type Mutation {
     createNewCompany(input: CreateNewCompanyInput!): Company!
-    createNewUser(input: CreateNewUserInput!): User!
+    registerUser(input: RegisterUserInput!): User!
     loginUser(input: LoginUserInput!): Company!
   }
 `;
@@ -109,7 +115,13 @@ const resolvers = {
         throw new UserInputError("Unable to create company.");
       }
     },
-    createNewUser: async (_, args) => {},
+    registerUser: async (_, args) => {
+      try {
+        console.log(args);
+      } catch (err) {
+        console.log(err);
+      }
+    },
     loginUser: async (_, args) => {
       const { email, password } = args.input;
       try {

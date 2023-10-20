@@ -43,24 +43,36 @@ export default function DashboardNavigation({}: Props) {
       >
         V
       </Link>
-
       {isExpanded ? (
         <button
           onClick={() => {
             setIsExpanded(false);
           }}
+          className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
         >
-          <Icon src="/assets/svg/close.svg" alt="Close" link="/dashboard" />
+          <img
+            className="w-6 h-fit opacity-70"
+            src="/assets/svg/close.svg"
+            alt="Close"
+            link="/dashboard"
+          />
         </button>
       ) : (
         <button
           onClick={() => {
             setIsExpanded(true);
           }}
+          className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
         >
-          <Icon src="/assets/svg/open.svg" alt="Expand" link="/dashboard" />
+          <img
+            className="w-6 h-fit opacity-70"
+            src="/assets/svg/open.svg"
+            alt="Expand"
+            link="/dashboard"
+          />
         </button>
       )}
+
       <Icon src="/assets/svg/grid.svg" alt="Overview" link="/dashboard" />
       <Icon
         src="/assets/svg/graph.svg"

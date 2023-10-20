@@ -28,6 +28,12 @@ model Team {
   updatedAt DateTime  @updatedAt
 }
 
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
 model User {
   id String @id @default(uuid())
   token String
@@ -38,7 +44,7 @@ model User {
   last_name String
   username String @unique
   location String
-  admin Boolean
+  access Role
   transactions Transaction[]
 }
 
