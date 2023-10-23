@@ -22,8 +22,10 @@ export default function LoginForm({}: Props) {
   `;
   const REGISTER_USER_MUTATION = gql`
     mutation registerUser($input: RegisterUserInput!) {
-      id
-      first_name
+      registerUser(input: $input) {
+        id
+        first_name
+      }
     }
   `;
 
@@ -36,33 +38,32 @@ export default function LoginForm({}: Props) {
     }
   `;
 
-  const [getCompanies, { loading, data, error }] = useLazyQuery(
-    GET_COMPANIES_QUERY
-  );
+  const [getCompanies, { loading, data, error }] =
+    useLazyQuery(GET_COMPANIES_QUERY);
   console.log(data);
 
   const [
     createCompany,
-    { loading: companyLoading, data: companyData, error: companyError }
+    { loading: companyLoading, data: companyData, error: companyError },
   ] = useMutation(CREATE_COMPANY_MUTATION, {
     errorPolicy: "all",
-    onCompleted: data => {
+    onCompleted: (data) => {
       if (data) {
         console.log(`${data} is the data`);
       }
-    }
+    },
   });
 
   const [
     createNewUser,
-    { loading: newUserLoading, data: newUserData, error: newUserError }
-  ] = useMutation(CREATE_COMPANY_MUTATION, {
-    errorPolicty: "all",
-    onCompleted: data => {
+    { loading: newUserLoading, data: newUserData, error: newUserError },
+  ] = useMutation(REGISTER_USER_MUTATION, {
+    errorPolicy: "all",
+    onCompleted: (data) => {
       if (data) {
         console.log(`${newUserData} is the data`);
       }
-    }
+    },
   });
 
   return (
@@ -72,8 +73,8 @@ export default function LoginForm({}: Props) {
         onClick={() => {
           createCompany({
             variables: {
-              input: { name: "CompanyEight" }
-            }
+              input: { name: "CompanyEight" },
+            },
           });
         }}
       >
@@ -97,9 +98,10 @@ export default function LoginForm({}: Props) {
                 companyId: "15c4849e-b614-4d39-a01c-90a59e5790ab",
                 first_name: "lewis",
                 last_name: "harris",
-                access: "USER"
-              }
-            }
+                access: "USER",
+                n,
+              },
+            },
           });
         }}
       >
@@ -116,7 +118,7 @@ export default function LoginForm({}: Props) {
         >
           <Formik
             initialValues={{ email: "", password: "" }}
-            validate={values => {
+            validate={(values) => {
               const errors = {};
               if (!values.email) {
                 errors.email = "Email required!";
@@ -141,7 +143,7 @@ export default function LoginForm({}: Props) {
               handleChange,
               handleBlur,
               handleSubmit,
-              isSubmitting
+              isSubmitting,
             }) => (
               <form
                 onSubmit={handleSubmit}
