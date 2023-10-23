@@ -36,14 +36,15 @@ enum Role {
 
 model User {
   id String @id @default(uuid())
-  token String
+  token String?
+  password String
   company Company @relation(fields: [companyId], references:[id])
   companyId String
   email String @unique
   first_name String
   last_name String
-  username String @unique
-  location String
+  username String? @unique
+  location String?
   access Role
   transactions Transaction[]
 }
