@@ -4,114 +4,15 @@ import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
+
 
 type Props = {};
 
 export default function LoginForm({}: Props) {
-  const CREATE_COMPANY_MUTATION = gql`
-    mutation createCompany($input: CreateNewCompanyInput!) {
-      createNewCompany(input: $input) {
-        id
-        name
-        teams {
-          id
-        }
-      }
-    }
-  `;
-  const REGISTER_USER_MUTATION = gql`
-    mutation registerUser($input: RegisterUserInput!) {
-      registerUser(input: $input) {
-        id
-        first_name
-      }
-    }
-  `;
-
-  const GET_COMPANIES_QUERY = gql`
-    query {
-      companies {
-        id
-        name
-      }
-    }
-  `;
-
-  const [getCompanies, { loading, data, error }] = useLazyQuery(
-    GET_COMPANIES_QUERY
-  );
-
-  const [
-    createCompany,
-    { loading: companyLoading, data: companyData, error: companyError }
-  ] = useMutation(CREATE_COMPANY_MUTATION, {
-    errorPolicy: "all",
-    onCompleted: data => {
-      if (data) {
-        console.log(`${companyData} is the data`);
-      }
-    }
-  });
-  console.log(data);
-
-  const [
-    createNewUser,
-    { loading: newUserLoading, data: newUserData, error: newUserError }
-  ] = useMutation(REGISTER_USER_MUTATION, {
-    errorPolicy: "all",
-    onCompleted: data => {
-      if (data) {
-        console.log(`${data} is the data`);
-      }
-    },
-    onError: error => {
-      console.log(error);
-    }
-  });
 
   return (
     <>
-      {companyError ? <div>{companyError.message}</div> : null}
-      <button
-        onClick={() => {
-          createCompany({
-            variables: {
-              input: { name: "CompanyNine" }
-            }
-          });
-        }}
-      >
-        Create Company
-      </button>
 
-      <button
-        onClick={() => {
-          getCompanies();
-        }}
-      >
-        Get Companies
-      </button>
-
-      <button
-        onClick={() => {
-          createNewUser({
-            variables: {
-              input: {
-                email: "newcustomer2@email.com",
-                companyId: "15c4849e-b614-4d39-a01c-90a59e5790ab",
-                first_name: "lauren",
-                username: "loz",
-                last_name: "mcnicoll",
-                password: "password",
-                access: "USER"
-              }
-            }
-          });
-        }}
-      >
-        Create New User
-      </button>
 
       <AnimatePresence>
         <motion.div
