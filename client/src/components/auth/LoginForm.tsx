@@ -1,19 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { gql, useMutation } from "@apollo/client";
 import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 type Props = {};
 
 export default function LoginForm({}: Props) {
+  const handleLogin = () => {
+    loginUser({
+      variables: {
+        input: { email: "newcustomer@emai.com", password: "password" },
+      },
+    });
+  };
+
+  const LOGIN_USER_MUTATION = gql`
+    mutation loginUser($input: LoginUserInput!) {
+      loginUser(input: $input) {
+        user {
+          token
+        }
+      }
+    }
+  `;
+
+  const [loginUser, { loading, data, error }] =
+    useMutation(LOGIN_USER_MUTATION);
 
   return (
     <>
-
-
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0 }}
@@ -78,11 +96,14 @@ export default function LoginForm({}: Props) {
             <button
               type="submit"
               className="p-2 w-content bg-violet-600 text-white rounded-full"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLogin();
+              }}
             >
               Log in
             </button>
           </form>
-          )}
           <div>
             <motion.div
               initial={{ opacity: 0 }}

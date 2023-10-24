@@ -1,14 +1,13 @@
 "use client";
-
-import React from "react";
-import Card from "../../components/dashboard/Card";
+import { redirect, useRouter } from "next/navigation";
+import React, { useContext } from "react";
+import { AuthContext } from "@/context/authContext";
 type Props = {};
 
 export default function Dashboard() {
   return (
     <div className=" mt-14 h-screen w-screen grid overflow-scroll">
-      <Card />
-      <Card />
+      Dashboard
     </div>
   );
 }

@@ -64,7 +64,7 @@ const typeDefs = gql`
   type Mutation {
     createNewCompany(input: CreateNewCompanyInput!): Company!
     registerUser(input: RegisterUserInput!): User!
-    loginUser(input: LoginUserInput!): Company!
+    loginUser(input: LoginUserInput!): User!
   }
 `;
 
@@ -151,6 +151,7 @@ const resolvers = {
     },
     loginUser: async (_, args) => {
       const { email, password } = args.input;
+      console.log(args.input);
       try {
         const user = await prisma.user.findUnique({
           where: { email: email },
