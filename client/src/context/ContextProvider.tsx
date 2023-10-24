@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import {
   ApolloClient,
   createHttpLink,
@@ -7,7 +7,7 @@ import {
   ApolloProvider
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { AuthProvider } from "./authContext";
+import { AuthContext } from "./authContext";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql"
@@ -30,12 +30,13 @@ const client = new ApolloClient({
 
 type Props = { children: React.ReactNode };
 
-function ContextProvider({ children }: Props) {
+const ContextProvider = ({ children }: Props) => {
+  const token = useContext(AuthContext);
   return (
     <ApolloProvider client={client}>
-      <AuthProvider>{children} </AuthProvider>
+      <AuthContext.Provider value={token}>{children}</AuthContext.Provider>
     </ApolloProvider>
   );
-}
+};
 
 export default ContextProvider;

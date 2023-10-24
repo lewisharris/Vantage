@@ -5,30 +5,36 @@ import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../../hooks/utils";
+import { useLogin } from "../../hooks/account";
 
 type Props = {};
+// fill out username
+// fill out password
+// submit data to back end for verification
+// receive response
+// set user context to token
 
 export default function LoginForm({}: Props) {
-  const handleLogin = () => {
+  const { login } = useAuth();
+  const handleSubmit = () => {
     loginUser({
       variables: {
-        input: { email: "newcustomer@emai.com", password: "password" },
-      },
+        input: { email: "newcustomer@email.com", password: "password" }
+      }
     });
   };
 
-  const LOGIN_USER_MUTATION = gql`
-    mutation loginUser($input: LoginUserInput!) {
-      loginUser(input: $input) {
-        user {
-          token
-        }
+  const loginUser = useLogin({
+    onCompleted: (data: any) => {
+      {
+        console.log(data);
       }
+    },
+    onError: (e: Error) => {
+      console.log(e);
     }
-  `;
-
-  const [loginUser, { loading, data, error }] =
-    useMutation(LOGIN_USER_MUTATION);
+  });
 
   return (
     <>
@@ -96,9 +102,9 @@ export default function LoginForm({}: Props) {
             <button
               type="submit"
               className="p-2 w-content bg-violet-600 text-white rounded-full"
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
-                handleLogin();
+                handleSubmit();
               }}
             >
               Log in
