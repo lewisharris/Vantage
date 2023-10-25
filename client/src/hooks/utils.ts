@@ -1,4 +1,6 @@
 import { useState } from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 
 export const useLocalStorage = () => {
   const [value, setValue] = useState<string | null>(null);
@@ -30,14 +32,19 @@ export const useAuth = () => {
       return token;
     }
   };
-  const login = (token: string) => {
+  const login = (token: string, userID: string) => {
+    const [context, setContext] = useContext(authContext);
     if (token) {
       setItem("token", token);
+    }
+    if (userID) {
+      setContext(userID);
     }
     return;
   };
   const logout = () => {
     removeItem("token");
+    // clear user context
   };
   return { verifyUser, login, logout };
 };

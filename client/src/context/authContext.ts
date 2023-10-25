@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
 type AuthContext = {
-  token: string | null;
+  userID: string | null;
 };
 
 export const AuthContext = createContext<AuthContext>({
-  token: null
+  userID: null
 });

@@ -28,7 +28,7 @@ const typeDefs = gql`
     first_name: String!
     last_name: String!
     username: String
-    admin: Boolean!
+    access: AccessType!
   }
 
   input CreateNewCompanyInput {
@@ -51,7 +51,7 @@ const typeDefs = gql`
     access: AccessType!
   }
 
-  input LoginUserInput {
+  input LoginAdminUserInput {
     email: String!
     password: String!
   }
@@ -64,7 +64,7 @@ const typeDefs = gql`
   type Mutation {
     createNewCompany(input: CreateNewCompanyInput!): Company!
     registerUser(input: RegisterUserInput!): User!
-    loginUser(input: LoginUserInput!): User!
+    loginAdminUser(input: LoginAdminUserInput!): User!
   }
 `;
 
@@ -155,7 +155,7 @@ const resolvers = {
         throw new ApolloError("Unable to create company.");
       }
     },
-    loginUser: async (_, args) => {
+    loginAdminUser: async (_, args) => {
       const { email, password } = args.input;
       try {
         let user = await prisma.user.findFirst({

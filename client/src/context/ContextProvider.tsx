@@ -31,10 +31,10 @@ const client = new ApolloClient({
 type Props = { children: React.ReactNode };
 
 const ContextProvider = ({ children }: Props) => {
-  const token = useContext(AuthContext);
+  const userID = useContext(AuthContext);
   return (
     <ApolloProvider client={client}>
-      <AuthContext.Provider value={token}>{children}</AuthContext.Provider>
+      <AuthContext.Provider value={userID}>{children}</AuthContext.Provider>
     </ApolloProvider>
   );
 };

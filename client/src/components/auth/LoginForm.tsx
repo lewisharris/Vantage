@@ -1,12 +1,11 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { gql, useMutation } from "@apollo/client";
-import { Formik } from "formik";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../hooks/utils";
-import { useLogin } from "../../hooks/account";
+import { useLoginAdmin } from "../../hooks/account";
+import { AdminLogin } from "../../types/auth";
 
 type Props = {};
 // fill out username
@@ -17,24 +16,25 @@ type Props = {};
 
 export default function LoginForm({}: Props) {
   const { login } = useAuth();
-  const handleSubmit = () => {
-    loginUser({
-      variables: {
-        input: { email: "newcustomer@email.com", password: "password" }
-      }
-    });
-  };
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const loginUser = useLogin({
-    onCompleted: (data: any) => {
-      {
-        console.log(data);
-      }
-    },
-    onError: (e: Error) => {
-      console.log(e);
+  const [onLogin, { data, loading }] = useLoginAdmin({
+    onCompleted: (data: { data: AdminLogin }) => {
+      console.log(data);
     }
   });
+  onLogin({
+    variables: {
+      input: { email: "newcustomer@email.com", password: "password" }
+    }
+  });
+
+  const handleSubmit = () => {};
+
+  const handleChange = event => {
+    setEmail(event.target.value);
+  };
 
   return (
     <>
@@ -52,20 +52,24 @@ export default function LoginForm({}: Props) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}
               key={"login-email"}
-              className="justify-between flex flex-row w-full my-2 border-b-2 border-solid border-slate-100"
+              className="justify-between flex flex-row items-center w-full my-2 border-b-2 border-solid border-slate-100"
             >
               <input
                 type="email"
-                name="email"
+                value={email}
+                name="login-email"
                 placeholder="Email"
-                className="w-full mt-4 sm:mt-auto p-4"
+                error={false}
+                disabled={false}
+                onChange={handleChange}
+                className="mt-4 sm:mt-auto p-4 grow"
               />
               <Image
                 src="/assets/svg/person.svg"
                 alt="email"
                 width={0}
                 height={0}
-                className="opacity-50 h-4 w-auto m-auto"
+                className="opacity-50 w-4 grow-0"
               />
             </motion.div>
             <motion.div
@@ -73,21 +77,24 @@ export default function LoginForm({}: Props) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
               key={"login-password"}
-              className="justify-between flex flex-row w-full my-2 border-b-2 border-solid border-slate-100"
+              className="justify-between items-center flex flex-row w-full my-2 border-b-2 border-solid border-slate-100"
             >
               <input
                 type="password"
-                name="password"
-                autoComplete="on"
+                value={password}
+                name="login-password"
                 placeholder="Password"
-                className="w-full mt-4 sm:mt-auto p-4"
+                error={false}
+                disabled={false}
+                onChange={() => {}}
+                className="mt-4 sm:mt-auto p-4 grow"
               />
               <Image
                 src="/assets/svg/lock.svg"
                 alt="password"
                 width={0}
                 height={0}
-                className="opacity-50 h-4 w-auto m-auto"
+                className="opacity-50 w-4"
               />
             </motion.div>
 
@@ -102,10 +109,7 @@ export default function LoginForm({}: Props) {
             <button
               type="submit"
               className="p-2 w-content bg-violet-600 text-white rounded-full"
-              onClick={e => {
-                e.preventDefault();
-                handleSubmit();
-              }}
+              onSubmit={handleChange}
             >
               Log in
             </button>
