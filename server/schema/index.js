@@ -28,14 +28,14 @@ const typeDefs = gql`
     first_name: String!
     last_name: String!
     username: String
-    access: AccessType!
+    access: Role!
   }
 
   input CreateNewCompanyInput {
     name: String!
   }
 
-  enum AccessType {
+  enum Role {
     USER
     ADMIN
     SUPER_ADMIN
@@ -48,7 +48,7 @@ const typeDefs = gql`
     last_name: String!
     username: String!
     password: String!
-    access: AccessType!
+    access: Role!
   }
 
   input LoginAdminUserInput {
@@ -64,7 +64,7 @@ const typeDefs = gql`
   type Mutation {
     createNewCompany(input: CreateNewCompanyInput!): Company!
     registerUser(input: RegisterUserInput!): User!
-    loginAdminUser(input: LoginAdminUserInput!): User!
+    loginAdmin(input: LoginAdminUserInput!): User!
   }
 `;
 
@@ -155,12 +155,15 @@ const resolvers = {
         throw new ApolloError("Unable to create company.");
       }
     },
-    loginAdminUser: async (_, args) => {
+    loginAdmin: async (_, args) => {
       const { email, password } = args.input;
       try {
         let user = await prisma.user.findFirst({
           where: { email: email }
         });
+        if (user.access === "USER" || null) {
+          throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
+        }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
           throw new ApolloError("Invalid Password", "INVALID_PASSWORD");
@@ -172,7 +175,7 @@ const resolvers = {
         });
         return user;
       } catch (err) {
-        throw new ApolloError("unable to log in", "LOGIN_FAILED");
+        throw new ApolloError("Unable to log in", "LOGIN_FAILED");
       }
     }
   }

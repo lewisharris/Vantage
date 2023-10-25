@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../hooks/utils";
 import { useLoginAdmin } from "../../hooks/account";
 import { AdminLogin } from "../../types/auth";
+import { redirect, useRouter } from "next/navigation";
 
 type Props = {};
 // fill out username
@@ -15,25 +16,34 @@ type Props = {};
 // set user context to token
 
 export default function LoginForm({}: Props) {
+  const { push } = useRouter();
   const { login } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [onLogin, { data, loading }] = useLoginAdmin({
-    onCompleted: (data: { data: AdminLogin }) => {
-      console.log(data);
+  const [onLogin, { data, loading, error }] = useLoginAdmin({
+    onCompleted: (data: AdminLogin) => {
+      console.log({ data: data.loginAdmin });
+      push("/dashboard");
     }
   });
-  onLogin({
-    variables: {
-      input: { email: "newcustomer@email.com", password: "password" }
-    }
-  });
+  if (error) {
+    console.log(error);
+  }
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    onLogin({
+      variables: {
+        input: { email, password: password }
+      }
+    });
+  };
 
   const handleChange = event => {
     setEmail(event.target.value);
+  };
+  const handlePasswordChange = event => {
+    setPassword(event.target.value);
   };
 
   return (
@@ -59,7 +69,6 @@ export default function LoginForm({}: Props) {
                 value={email}
                 name="login-email"
                 placeholder="Email"
-                error={false}
                 disabled={false}
                 onChange={handleChange}
                 className="mt-4 sm:mt-auto p-4 grow"
@@ -81,12 +90,12 @@ export default function LoginForm({}: Props) {
             >
               <input
                 type="password"
+                autoComplete=""
                 value={password}
                 name="login-password"
                 placeholder="Password"
-                error={false}
                 disabled={false}
-                onChange={() => {}}
+                onChange={handlePasswordChange}
                 className="mt-4 sm:mt-auto p-4 grow"
               />
               <Image
@@ -106,10 +115,21 @@ export default function LoginForm({}: Props) {
             >
               Forgot password?
             </motion.button>
+            {error ? (
+              <p className="h-8 italic text-red-500">{error.message}</p>
+            ) : (
+              <p className="h-8"></p>
+            )}
             <button
               type="submit"
-              className="p-2 w-content bg-violet-600 text-white rounded-full"
-              onSubmit={handleChange}
+              className={`p-2 w-content ${
+                loading ? "bg-violet-300" : "bg-violet-600"
+              } text-white rounded-full`}
+              onClick={event => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+              disabled={loading ? true : false}
             >
               Log in
             </button>
