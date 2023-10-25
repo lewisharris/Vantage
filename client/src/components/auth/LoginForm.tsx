@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../hooks/utils";
 import { useLoginAdmin } from "../../hooks/account";
 import { AdminLogin } from "../../types/auth";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 // fill out username
@@ -23,7 +23,8 @@ export default function LoginForm({}: Props) {
 
   const [onLogin, { data, loading, error }] = useLoginAdmin({
     onCompleted: (data: AdminLogin) => {
-      console.log({ data: data.loginAdmin });
+      const { token, id } = data?.loginAdmin;
+      login(token, id);
       push("/dashboard");
     }
   });

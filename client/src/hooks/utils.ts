@@ -33,15 +33,19 @@ export const useAuth = () => {
     }
   };
   const login = (token: string, userID: string) => {
-    const [context, setContext] = useContext(authContext);
+    /*const [context, setContext] = useContext(AuthContext);*/
     if (token) {
       setItem("token", token);
     }
+    {
+      /*
     if (userID) {
       setContext(userID);
+    }*/
     }
     return;
   };
+
   const logout = () => {
     removeItem("token");
     // clear user context
