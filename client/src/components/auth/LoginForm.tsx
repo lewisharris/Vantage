@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,11 +9,6 @@ import { AdminLogin } from "../../types/auth";
 import { useRouter } from "next/navigation";
 
 type Props = {};
-// fill out username
-// fill out password
-// submit data to back end for verification
-// receive response
-// set user context to token
 
 export default function LoginForm({}: Props) {
   const { push } = useRouter();
@@ -26,7 +21,7 @@ export default function LoginForm({}: Props) {
       const { token, id } = data?.loginAdmin;
       login(token, id);
       push("/dashboard");
-    }
+    },
   });
   if (error) {
     console.log(error);
@@ -35,15 +30,15 @@ export default function LoginForm({}: Props) {
   const handleSubmit = () => {
     onLogin({
       variables: {
-        input: { email, password: password }
-      }
+        input: { email, password: password },
+      },
     });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setEmail(event.target.value);
   };
-  const handlePasswordChange = event => {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
@@ -126,7 +121,7 @@ export default function LoginForm({}: Props) {
               className={`p-2 w-content ${
                 loading ? "bg-violet-300" : "bg-violet-600"
               } text-white rounded-full`}
-              onClick={event => {
+              onClick={(event) => {
                 event.preventDefault();
                 handleSubmit();
               }}
