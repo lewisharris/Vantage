@@ -21,7 +21,6 @@ export default function AdminLayout({
       <body className={inter.className}>
         <Navbar />
         <div className="bg-slate-100 flex flex-row max-h-screen w-screen">
-          <DashboardNavigation />
           {children}
         </div>
       </body>

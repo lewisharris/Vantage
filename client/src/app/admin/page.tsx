@@ -18,19 +18,22 @@ export default function Admin() {
     REGISTER_USER_MUTATION,
     {
       errorPolicy: "all",
-      onCompleted: (data) => {
+      onCompleted: data => {
         if (data) {
           console.log(`${data} is the data`);
         }
       },
-      onError: (error) => {
+      onError: error => {
         console.log(error);
-      },
+      }
     }
   );
   return (
     <div className="flex flex-row w-screen h-screen items-center justify-center">
       <Card>
+        <button className="bg-indigo-600 text-white p-4 rounded-xl">
+          Onboard Company
+        </button>
         <button
           onClick={() => {
             registerUser({
@@ -42,16 +45,14 @@ export default function Admin() {
                   username: "loz",
                   last_name: "mcnicoll",
                   password: "password",
-                  access: "USER",
-                },
-              },
+                  access: "USER"
+                }
+              }
             });
           }}
         >
           Create New User
         </button>
-        {loading ? <p>Loading</p> : null}
-        {error ? <p>{error.message}</p> : null}
       </Card>
       <div className="hidden grow w-3/6 sm:flex flex-row items-center justify-center"></div>
     </div>
