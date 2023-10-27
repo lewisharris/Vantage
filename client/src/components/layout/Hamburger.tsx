@@ -48,8 +48,10 @@ export default function Hamburger({}: Props): ReactElement {
             }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            exit={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            exit={{
+              opacity: 0
+            }}
             key="hamburger-overlay"
           >
             {user ? (
@@ -135,24 +137,27 @@ export default function Hamburger({}: Props): ReactElement {
               initial={{ translateX: 0, translateY: 300 }}
               animate={{ translateX: 0, translateY: 0 }}
               transition={{ duration: 0.5 }}
-              exit={{ translateX: 0, translateY: 300 }}
+              exit={{ translateX: 0, translateY: 500, duration: 0.3 }}
+              key="hambuger-circle-1"
             ></motion.div>
             <motion.div
               className="w-[600px] h-1/2 bg-indigo-200 absolute bottom-0 left-0 z-20 rounded-t-full m-0 "
               initial={{ translateX: 0, translateY: 300 }}
               animate={{ translateX: 0, translateY: 50 }}
               transition={{ duration: 0.4 }}
-              exit={{ translateX: 0, translateY: 300 }}
+              exit={{ translateX: 0, translateY: 500, duration: 0.3 }}
+              key="hambuger-circle-2"
             ></motion.div>
             <motion.div
               className="w-[600px] h-1/2 bg-indigo-300 absolute bottom-0 left-0 z-20 rounded-t-full m-0 "
               initial={{ translateX: 0, translateY: 300 }}
               animate={{ translateX: 0, translateY: 100 }}
               transition={{ duration: 0.3 }}
-              exit={{ translateX: 0, translateY: 300 }}
+              exit={{ translateX: 0, translateY: 500, duration: 0.3 }}
+              key="hambuger-circle-3"
             ></motion.div>
           </motion.div>
-        ) : null}{" "}
+        ) : null}
       </AnimatePresence>
     </>
   );

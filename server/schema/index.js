@@ -3,6 +3,28 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ApolloError, UserInputError } from "apollo-server-express";
+
+// Authenticate token - This needs moving to Auth file
+const auth = () => {
+  // context = {...headers}
+  const authHeader = context.req.headers.authorization;
+  if (authHeader) {
+    // Bearer ..
+    const token = authHeader.split("bearer")[1];
+    if (token) {
+      try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(user);
+        return user;
+      } catch (err) {
+        throw new AuthenticationError("Invalid/Expired token");
+      }
+    }
+    throw new Error("Authentication token must be Bearer [token]");
+  }
+  throw new Error("Authorization header must be provided");
+};
+
 const prisma = new PrismaClient();
 
 const typeDefs = gql`
@@ -21,14 +43,15 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    token: String
+    token: String!
     email: String!
-    company: ID!
+    companyId: ID!
     location: String
     first_name: String!
     last_name: String!
     username: String
     access: Role!
+    company: Company!
   }
 
   input CreateNewCompanyInput {
@@ -59,6 +82,7 @@ const typeDefs = gql`
   type Query {
     companies: [Company!]!
     company(email: String): Company!
+    adminUser(id: String!): User!
   }
 
   type Mutation {
@@ -72,7 +96,7 @@ const resolvers = {
   Query: {
     companies: async () => {
       try {
-        const allCompanies = await prisma.Company.findMany();
+        const allCompanies = await prisma.company.findMany();
         return allCompanies;
       } catch (err) {
         console.log(err);
@@ -81,13 +105,31 @@ const resolvers = {
     company: async (_, args) => {
       const email = args.email;
       try {
-        const company = await prisma.Company.findFirst({
+        const company = await prisma.company.findFirst({
           where: { email: email },
           include: { teams: true }
         });
         return company;
       } catch (err) {
         throw new ApolloError("Failed to find user", "FAILED_TO_FIND_COMPANY");
+      }
+    },
+    adminUser: async (_, args, context) => {
+      const id = args.id;
+      try {
+        const user = await prisma.user.findFirst({
+          where: { id: id },
+          include: { company: true }
+        });
+        if (user.access === "USER" || null) {
+          throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
+        }
+        return user;
+      } catch (err) {
+        throw new ApolloError(
+          "Failed to fetch user data",
+          "ADMIN_USER_FETCH_FAILED"
+        );
       }
     }
   },
@@ -155,11 +197,7 @@ const resolvers = {
         throw new ApolloError("Unable to create company.");
       }
     },
-    loginAdmin: async (_, args, context) => {
-      /*
-      if (!context.user) {
-        throw new AuthenticationError("Unauthorized");
-      }*/
+    loginAdmin: async (_, args) => {
       const { email, password } = args.input;
       if (!email && !password) {
         throw new ApolloError(

@@ -21,7 +21,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="bg-slate-100 flex flex-row max-h-screen w-screen">
+      <div className="bg-slate-100 flex flex-row w-screen">
         <DashboardNavigation />
         {children}
       </div>

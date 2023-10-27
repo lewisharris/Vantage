@@ -23,31 +23,34 @@ export default function Navbar({}: Props) {
       {user ? (
         <Link
           href="/login"
-          className=" hidden sm:inline mx-8 text-violet-800"
+          className="hidden sm:inline mx-8 text-violet-800"
           onClick={() => logout()}
         >
           Log out
         </Link>
       ) : (
         <>
-          <Link href="/about" className="hidden sm:inline mx-8">
+          <Link
+            href="/about"
+            className="hidden sm:inline mx-8 hover:border-b-2 hover:border-black"
+          >
             How it works
           </Link>
-          <Link href="/pricing" className="hidden sm:inline mx-8">
+          <Link
+            href="/pricing"
+            className="hidden sm:inline mx-8 hover:border-b-2 hover:border-black"
+          >
             Pricing
           </Link>
           {pathname === "/login" ? (
             <Link
               href="/register"
-              className=" hidden sm:inline mx-8 text-violet-800"
+              className="hidden sm:inline mx-8  text-violet-800"
             >
               Register
             </Link>
           ) : (
-            <Link
-              href="/login"
-              className=" hidden sm:inline mx-8 text-violet-800"
-            >
+            <Link href="/login" className="hidden sm:inline mx-8 ">
               Sign in
             </Link>
           )}

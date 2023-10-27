@@ -1,6 +1,7 @@
 import { AuthenticationError } from "apollo-server";
 import { jwt } from "jsonwebtoken";
 
+// Authenticate token
 const auth = () => {
   // context = {...headers}
   const authHeader = context.req.headers.authorization;
@@ -20,8 +21,6 @@ const auth = () => {
   throw new Error("Authorization header must be provided");
 };
 
-// Authenticate token
-
 // Authorize Admin
 const adminAuthorization = user => {
   if (user.access === "USER" || null) {
@@ -29,4 +28,4 @@ const adminAuthorization = user => {
   }
 };
 
-export { auth, adminAuthorization };
+export default { auth, adminAuthorization };

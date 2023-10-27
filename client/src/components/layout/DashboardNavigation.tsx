@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
+import { useGetAdminUser } from "../../hooks/account";
+import UserContext from "../../context/UserContext";
 
 type IconProps = {
   link: string;
@@ -30,33 +32,47 @@ const Icon = ({ src, alt, title, link }: IconProps) => {
 type Props = {};
 
 export default function DashboardNavigation({}: Props) {
+  const [user] = useContext(UserContext);
+  const { data, loading, error } = useGetAdminUser({
+    variables: {
+      input: user
+    },
+    onError: error => {
+      return error;
+    }
+  });
+
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   return (
     <div
       className={`${
         isExpanded ? "w-fit" : "w-screen sm:w-14"
-      } shrink-0 transition-all grow-0 overflow-hidden bg-white flex flex-row sm:flex-col h-screen shadow-md shadow-slate-300 pt-10`}
+      } shrink-0 transition-all grow-0 overflow-hidden bg-white flex flex-row sm:flex-col h-[calc(100vh-56px)] shadow-md shadow-slate-300`}
     >
       <Link
         href="/dashboard/profile-settings"
         className="my-8 mx-auto text-center font-bold w-8 h-8 text-xs flex flex-row items-center justify-center rounded-full text-lg bg-violet-400"
       >
-        V
+        {data?.adminUser?.company?.name
+          ? data.adminUser.company.name.charAt(0)
+          : "V"}
       </Link>
       {isExpanded ? (
-        <button
-          onClick={() => {
-            setIsExpanded(false);
-          }}
-          className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
-        >
-          <img
-            className="w-6 h-fit opacity-70"
-            src="/assets/svg/close.svg"
-            alt="Close"
-            link="/dashboard"
-          />
-        </button>
+        <>
+          <button
+            onClick={() => {
+              setIsExpanded(false);
+            }}
+            className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
+          >
+            <img
+              className="w-6 h-fit opacity-70"
+              src="/assets/svg/close.svg"
+              alt="Close"
+              link="/dashboard"
+            />
+          </button>
+        </>
       ) : (
         <button
           onClick={() => {
@@ -72,7 +88,6 @@ export default function DashboardNavigation({}: Props) {
           />
         </button>
       )}
-
       <Icon src="/assets/svg/grid.svg" alt="Overview" link="/dashboard" />
       <Icon
         src="/assets/svg/graph.svg"
