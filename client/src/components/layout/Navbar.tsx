@@ -1,23 +1,31 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "../../hooks/utils";
+import UserContext from "../../context/UserContext";
+import Hamburger from "./Hamburger";
 
 type Props = {};
 
 export default function Navbar({}: Props) {
+  const { logout } = useAuth();
+  const [user] = useContext(UserContext);
   const pathname = usePathname();
-  const isLoggedIn = false;
   return (
-    <div className="flex flex-row justify-end p-4 h-14 fixed top-0 left-0 w-full bg-white">
+    <div className="flex flex-row justify-end p-4 h-14 fixed top-0 left-0 w-full bg-white relative">
       <Link
         href="/"
         className="text-2xl text-bold mt-1 sm:mt-auto text-violet-900 mr-auto items-center"
       >
         VANTAGE
       </Link>
-      {isLoggedIn ? (
-        <Link href="/login" className=" hidden sm:inline mx-8 text-violet-800">
+      {user ? (
+        <Link
+          href="/login"
+          className=" hidden sm:inline mx-8 text-violet-800"
+          onClick={() => logout()}
+        >
           Log out
         </Link>
       ) : (
@@ -45,12 +53,7 @@ export default function Navbar({}: Props) {
           )}
         </>
       )}
-
-      <div className="sm:hidden flex flex-col absolute right-0 top-0 p-4">
-        <div className="my-1 w-8 h-1 bg-slate-700 rounded-full"></div>
-        <div className="my-1 w-8 h-1 bg-slate-700 rounded-full"></div>
-        <div className="my-1 w-8 h-1 bg-slate-700 rounded-full"></div>
-      </div>
+      <Hamburger />
     </div>
   );
 }

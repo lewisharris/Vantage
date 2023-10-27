@@ -1,4 +1,4 @@
-import { gql } from "apollo-server-express";
+import { gql, AuthenticationError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -155,12 +155,41 @@ const resolvers = {
         throw new ApolloError("Unable to create company.");
       }
     },
-    loginAdmin: async (_, args) => {
+    loginAdmin: async (_, args, context) => {
+      /*
+      if (!context.user) {
+        throw new AuthenticationError("Unauthorized");
+      }*/
       const { email, password } = args.input;
+      if (!email && !password) {
+        throw new ApolloError(
+          "No email or password entered.",
+          "LOGIN_CREDENTIALS_MISSING"
+        );
+      }
+      if (!email) {
+        throw new ApolloError(
+          "Please enter a valid email",
+          "LOGIN_EMAIL_MISSING"
+        );
+      }
+      if (!password) {
+        throw new ApolloError(
+          "Please enter a valid password",
+          "LOGIN_PASSWORD_MISSING"
+        );
+      }
+
       try {
         let user = await prisma.user.findFirst({
           where: { email: email }
         });
+        if (!user) {
+          throw new ApolloError(
+            "No user with that email exists.",
+            "INVALID_EMAIL_ADMIN"
+          );
+        }
         if (user.access === "USER" || null) {
           throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
         }

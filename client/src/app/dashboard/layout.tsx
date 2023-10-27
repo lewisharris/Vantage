@@ -5,23 +5,22 @@ import DashboardNavigation from "../../components/layout/DashboardNavigation";
 import Navbar from "@/components/layout/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 import { redirect, useRouter } from "next/navigation";
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import React, { useEffect, useContext } from "react";
+import UserContext from "../../context/UserContext";
+import { useAuth } from "../../hooks/utils";
 
 export default function DashboardLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const { push } = useRouter();
-  const token = useContext(AuthContext);
-  if (!token) {
-    push("/login");
-  }
+  useEffect(() => {
+    loggedIn();
+  }, []);
+  const { loggedIn } = useAuth();
 
   return (
     <>
-      <Navbar />
       <div className="bg-slate-100 flex flex-row max-h-screen w-screen">
         <DashboardNavigation />
         {children}

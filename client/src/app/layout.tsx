@@ -8,7 +8,7 @@ import Navbar from "../components/layout/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

@@ -1,13 +1,13 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { AuthContext } from "./authContext";
+import UserContext from "./UserContext";
+import { setContext } from "apollo-link-context";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql"
@@ -28,13 +28,13 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-type Props = { children: React.ReactNode };
-
-const ContextProvider = ({ children }: Props) => {
-  const userID = useContext(AuthContext);
+const ContextProvider = ({ children }) => {
+  const [user, setUser] = useState("");
   return (
     <ApolloProvider client={client}>
-      <AuthContext.Provider value={userID}>{children}</AuthContext.Provider>
+      <UserContext.Provider value={[user, setUser]}>
+        {children}
+      </UserContext.Provider>
     </ApolloProvider>
   );
 };

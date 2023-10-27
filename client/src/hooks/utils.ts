@@ -1,6 +1,6 @@
-import { useState } from "react";
-import React, { useContext } from "react";
-import { AuthContext } from "../context/authContext";
+import React, { useContext, useState } from "react";
+import UserContext from "../context/UserContext";
+import { useRouter } from "next/navigation";
 
 export const useLocalStorage = () => {
   const [value, setValue] = useState<string | null>(null);
@@ -26,29 +26,30 @@ export const useLocalStorage = () => {
 
 export const useAuth = () => {
   const { getItem, setItem, removeItem } = useLocalStorage();
-  const verifyUser = () => {
-    const token = getItem("token");
-    if (token) {
-      return token;
+  const { push } = useRouter();
+  const [user, setUser] = useContext(UserContext);
+
+  const loggedIn = () => {
+    const localToken = getItem("token");
+    if (!localToken || !user) {
+      removeItem("token");
+      setUser("");
+      push("/login");
     }
   };
+
   const login = (token: string, userID: string) => {
-    /*const [context, setContext] = useContext(AuthContext);*/
-    if (token) {
+    if (token && userID) {
       setItem("token", token);
+      setUser(userID);
+      push("/dashboard");
     }
-    {
-      /*
-    if (userID) {
-      setContext(userID);
-    }*/
-    }
-    return;
   };
 
   const logout = () => {
     removeItem("token");
-    // clear user context
+    push("/login");
+    setUser("");
   };
-  return { verifyUser, login, logout };
+  return { loggedIn, login, logout };
 };

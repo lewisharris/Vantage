@@ -4,7 +4,7 @@ import LoginForm from "../../components/auth/LoginForm";
 
 export default function Login() {
   return (
-    <div className="flex flex-row w-screen h-screen items-center justify-center">
+    <div className="flex flex-row w-screen h-[calc(100vh-56px)] items-center justify-center">
       <LoginForm />
       <div className="hidden grow w-3/6 sm:flex flex-row items-center justify-center">
         <Image
