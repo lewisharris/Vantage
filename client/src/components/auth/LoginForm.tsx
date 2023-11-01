@@ -21,7 +21,6 @@ export default function LoginForm() {
       push("/dashboard");
     }
   }, []);
-
   const [onLogin, { data, loading, error }] = useLoginAdmin({
     onCompleted: (data: AdminLogin) => {
       const { token, id } = data?.loginAdmin;

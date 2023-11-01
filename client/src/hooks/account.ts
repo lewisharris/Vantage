@@ -10,6 +10,15 @@ const LOGIN_ADMIN_USER_MUTATION = gql`
   }
 `;
 
+const CREATE_TEAM_MEMBER = gql`
+  mutation createTeamMember($input: String!) {
+    createTeamMember(id: $input) {
+      id
+      email
+    }
+  }
+`;
+
 const GET_ADMIN_USER_DETAILS = gql`
   query adminUser($input: String!) {
     adminUser(id: $input) {
@@ -33,3 +42,6 @@ export const useGetAdminUser = (options = {}) =>
 
 export const useLoginAdmin = (options = {}) =>
   useMutation(LOGIN_ADMIN_USER_MUTATION, options);
+
+export const useCreateNewTeamMember = (options = {}) =>
+  useMutation(CREATE_TEAM_MEMBER, options);

@@ -89,6 +89,7 @@ const typeDefs = gql`
     createNewCompany(input: CreateNewCompanyInput!): Company!
     registerUser(input: RegisterUserInput!): User!
     loginAdmin(input: LoginAdminUserInput!): User!
+    createTeamMember(input: String!): User!
   }
 `;
 
@@ -243,6 +244,13 @@ const resolvers = {
         return user;
       } catch (err) {
         throw new ApolloError("Unable to log in", "LOGIN_FAILED");
+      }
+    },
+    createTeamMember: async (_, args) => {
+      try {
+        console.log("fired");
+      } catch (err) {
+        throw new ApolloError("failed");
       }
     }
   }

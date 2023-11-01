@@ -1,12 +1,38 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { useCreateNewTeamMember } from "../../../hooks/account";
 
 type Props = {};
 
 export default function MyTeams({}: Props) {
+  const [createUser, setCreateUser] = useState(false);
+  const [createTeamMember, { data, loading, error }] = useCreateNewTeamMember({
+    onCompleted: data => {
+      console.log(data);
+    },
+    onError: error => {
+      return error;
+    }
+  });
+  // createTeamMember({ variables: { input: { id: "123" } } })
+
   return (
     <div className="mt-14 w-full h-full">
       <div className="bg-indigo-300 flex flex-row text-white">
-        <button className="p-2 bg-indigo-500">Create team member +</button>
+        {createUser ? (
+          <>
+            <div className="w-screen z-10 h-screen opacity-50 bg-black absolute top-0 left-0"></div>
+            <div className="text-black w-[50vw] h-[50vh] fixed z-20 left-0 top-0 rounded-3xl bg-white m-auto translate-x-1/2 translate-y-1/2 drop-shadow-xl">
+              <p>Modal with overlay that closes it</p>
+            </div>
+          </>
+        ) : null}
+        <button
+          onClick={() => setCreateUser(true)}
+          className="p-2 bg-indigo-500"
+        >
+          Create team member +
+        </button>
         <button className="p-2 ml-auto bg-indigo-500">Export Data</button>
       </div>
       <div className="bg-white m-6 p-6 rounded-lg flex flex-col gap-4">
