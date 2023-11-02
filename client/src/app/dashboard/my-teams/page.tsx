@@ -1,6 +1,27 @@
 "use client";
 import React, { useState } from "react";
 import { useCreateNewTeamMember } from "../../../hooks/account";
+import Modal from "../../../components/reusable/Modal";
+
+const createUserForm = (
+  <>
+    <p>Modal with overlay that closes it</p>
+    <form className="flex flex-col">
+      <input placeholder="email"></input>
+      <input placeholder="password"></input>
+      <input placeholder="first name"></input>
+      <input placeholder="last name"></input>
+      <input placeholder="access"></input>
+      <select>
+        <option>Team 1</option>
+        <option>Team 1</option>
+        <option>Team 1</option>
+        <option>Team 1</option>
+      </select>
+      <button>Create User</button>
+    </form>
+  </>
+);
 
 type Props = {};
 
@@ -14,18 +35,17 @@ export default function MyTeams({}: Props) {
       return error;
     }
   });
+
   // createTeamMember({ variables: { input: { id: "123" } } })
 
   return (
     <div className="mt-14 w-full h-full">
       <div className="bg-indigo-300 flex flex-row text-white">
         {createUser ? (
-          <>
-            <div className="w-screen z-10 h-screen opacity-50 bg-black absolute top-0 left-0"></div>
-            <div className="text-black w-[50vw] h-[50vh] fixed z-20 left-0 top-0 rounded-3xl bg-white m-auto translate-x-1/2 translate-y-1/2 drop-shadow-xl">
-              <p>Modal with overlay that closes it</p>
-            </div>
-          </>
+          <Modal
+            content={createUserForm}
+            toggleOpen={() => setCreateUser(false)}
+          />
         ) : null}
         <button
           onClick={() => setCreateUser(true)}

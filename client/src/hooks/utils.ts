@@ -41,15 +41,17 @@ export const useAuth = () => {
   const login = (token: string, userID: string) => {
     if (token && userID) {
       setItem("token", token);
+      setItem("userID", userID);
       setUser(userID);
       push("/dashboard");
     }
   };
 
   const logout = () => {
-    removeItem("token");
     push("/login");
     setUser("");
+    removeItem("token");
+    removeItem("UserID");
   };
   return { loggedIn, login, logout };
 };

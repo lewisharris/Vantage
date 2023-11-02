@@ -20,7 +20,7 @@ export default function LoginForm() {
     if (user) {
       push("/dashboard");
     }
-  }, []);
+  }, [user]);
   const [onLogin, { data, loading, error }] = useLoginAdmin({
     onCompleted: (data: AdminLogin) => {
       const { token, id } = data?.loginAdmin;
