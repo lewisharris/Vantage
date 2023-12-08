@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useCreateNewTeamMember } from "../../../hooks/account";
 import Modal from "../../../components/reusable/Modal";
+import { useAuth } from "../../../hooks/utils";
+import UserContext from "../../../context/UserContext";
 
 const createUserForm = (
   <>
@@ -27,6 +29,9 @@ type Props = {};
 
 export default function MyTeams({}: Props) {
   const [createUser, setCreateUser] = useState(false);
+  const [user] = useContext(UserContext);
+  const { loggedIn } = useAuth();
+  loggedIn();
   const [createTeamMember, { data, loading, error }] = useCreateNewTeamMember({
     onCompleted: data => {
       console.log(data);
@@ -105,10 +110,10 @@ export default function MyTeams({}: Props) {
               </div>
             </div>
             <ul>
-              <li>Buster</li>
-              <li>Boster</li>
-              <li>Bonstero</li>
-              <li>Dave</li>
+              <li>user 1</li>
+              <li>user 2</li>
+              <li>user 3</li>
+              <li>user 4</li>
             </ul>
           </div>
         </div>

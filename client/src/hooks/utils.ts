@@ -30,6 +30,7 @@ export const useAuth = () => {
   const [user, setUser] = useContext(UserContext);
 
   const loggedIn = () => {
+    console.log(user);
     const localToken = getItem("token");
     if (!localToken || !user) {
       removeItem("token");
