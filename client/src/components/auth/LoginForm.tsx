@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../hooks/utils";
-import { useLoginAdmin } from "../../hooks/account";
+import { useLoginAdmin, useRegisterUser } from "../../hooks/account";
 import { AdminLogin } from "../../types/auth";
 import { useRouter } from "next/navigation";
 import UserContext from "../../context/UserContext";
@@ -27,10 +27,17 @@ export default function LoginForm() {
       login(token, id);
       push("/dashboard");
     },
-    onError: error => {
+    onError: (error) => {
       return error;
-    }
+    },
   });
+
+  const [onRegister, { data: registerData, error: registerError }] =
+    useRegisterUser({
+      onCompleted: () => {
+        console.log(registerData);
+      },
+    });
 
   if (error) {
     console.log(error);
@@ -39,16 +46,32 @@ export default function LoginForm() {
   const handleSubmit = () => {
     onLogin({
       variables: {
-        input: { email, password: password }
-      }
+        input: { email, password: password },
+      },
     });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setEmail(event.target.value);
   };
-  const handlePasswordChange = event => {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handleRegister = () => {
+    onRegister({
+      variables: {
+        input: {
+          email: "joebloggs@email.com",
+          companyId: "4",
+          first_name: "joe",
+          last_name: "bloggs",
+          username: "jbloggs",
+          password: "password",
+          access: "ADMIN",
+        },
+      },
+    });
   };
 
   return (
@@ -61,6 +84,8 @@ export default function LoginForm() {
           key={"login-form"}
           className="flex flex-col text-center grow items-center justify-center"
         >
+          <button onClick={handleRegister}>Register user</button>
+          {registerError ? <div>{registerError.message}</div> : null}
           <form className="flex flex-col w-3/4 mb-4 ">
             <motion.div
               initial={{ opacity: 0 }}
@@ -131,7 +156,7 @@ export default function LoginForm() {
               className={`p-2 w-content ${
                 loading ? "bg-violet-300" : "bg-violet-600"
               } text-white rounded-full`}
-              onClick={event => {
+              onClick={(event) => {
                 event.preventDefault();
                 handleSubmit();
               }}

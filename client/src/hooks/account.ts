@@ -37,6 +37,15 @@ const GET_ADMIN_USER_DETAILS = gql`
   }
 `;
 
+const REGISTER_USER = gql`
+  mutation registerUser($input: RegisterUserInput!) {
+    registerUser(input: $input) {
+      id
+      token
+    }
+  }
+`;
+
 export const useGetAdminUser = (options = {}) =>
   useQuery(GET_ADMIN_USER_DETAILS, options);
 
@@ -45,3 +54,6 @@ export const useLoginAdmin = (options = {}) =>
 
 export const useCreateNewTeamMember = (options = {}) =>
   useMutation(CREATE_TEAM_MEMBER, options);
+
+export const useRegisterUser = (options = {}) =>
+  useMutation(REGISTER_USER, options);

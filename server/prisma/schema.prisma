@@ -46,7 +46,6 @@ model User {
   username String? @unique
   location String?
   access Role
-  transactions Transaction[]
 }
 
 model Transaction {
@@ -55,7 +54,6 @@ model Transaction {
   companyId String
   team Team @relation(fields: [teamId], references:[id])
   teamId String
-  user User @relation(fields:[userId],references:[id])
   userId String
   createdAt DateTime  @default(now())
   isApproved Boolean @default(false)

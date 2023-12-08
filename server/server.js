@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
@@ -32,12 +32,11 @@ async function startServer() {
           return { user: null };
         }
         const decoded = jwt.verify(token.slice(7), process.env.JWT_SECRET);
-        console.log(decoded);
         return { user: decoded };
       } catch (err) {
         return { user: null };
       }
-    }
+    },
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
