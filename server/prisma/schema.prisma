@@ -1,4 +1,3 @@
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -9,53 +8,47 @@ generator client {
 }
 
 model Company {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  teams     Team[]
-  users     User[]
+  id           String        @default(uuid()) @id
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  teams        Team[]
+  users        User[]
   transactions Transaction[]
 }
 
 model Team {
-  id        String    @id @default(uuid())
-  name      String
-  location  String?
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
+  id           String        @default(uuid()) @id
+  name         String
+  location     String?
+  company      Company       @relation(fields: [companyId], references: [id])
+  companyId    String
   transactions Transaction[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-enum Role {
-  USER
-  ADMIN
-  SUPER_ADMIN
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model User {
-  id String @id @default(uuid())
-  token String?
-  password String
-  company Company @relation(fields: [companyId], references:[id])
-  companyId String
-  email String @unique
+  id         String  @default(uuid()) @id
+  token      String?
+  password   String
+  company    Company @relation(fields: [companyId], references: [id])
+  companyId  String
+  email      String  @unique
   first_name String
-  last_name String
-  username String? @unique
-  location String?
-  access Role
+  last_name  String
+  username   String? @unique
+  location   String?
+  access     String
 }
 
 model Transaction {
-  id String @id @default(uuid()) @unique
-  company Company @relation(fields: [companyId], references:[id])
-  companyId String
-  team Team @relation(fields: [teamId], references:[id])
-  teamId String
-  userId String
-  createdAt DateTime  @default(now())
-  isApproved Boolean @default(false)
+  id         String   @default(uuid()) @id
+  company    Company  @relation(fields: [companyId], references: [id])
+  companyId  String
+  team       Team     @relation(fields: [teamId], references: [id])
+  teamId     String
+  userId     String
+  createdAt  DateTime @default(now())
+  isApproved Boolean  @default(false)
 }
