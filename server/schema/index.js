@@ -170,6 +170,7 @@ const resolvers = {
           throw new ApolloError("User already exists", "USER_ALREADY_EXISTS");
         }
         const passwordHash = await bcrypt.hash(password, 10);
+
         let user = await prisma.user.create({
           data: {
             email: email.toLowerCase(),
@@ -222,7 +223,7 @@ const resolvers = {
             "INVALID_EMAIL_ADMIN"
           );
         }
-        if (user.access === "USER" || null) {
+        if (user.access !== "ADMIN" || null) {
           throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
         }
         const isMatch = await bcrypt.compare(password, user.password);
@@ -230,6 +231,7 @@ const resolvers = {
           throw new ApolloError("Invalid Password", "INVALID_PASSWORD");
         }
         let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+        console.log(token);
         user = await prisma.user.update({
           where: { email: email.toLowerCase() },
           data: { token: token },
