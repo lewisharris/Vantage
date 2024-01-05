@@ -31,6 +31,7 @@ const typeDefs = gql`
   type Company {
     id: ID!
     name: String!
+    users: [User!]
     teams: [Team!]
   }
 
@@ -53,15 +54,14 @@ const typeDefs = gql`
     access: Role!
     company: Company!
   }
-
-  input CreateNewCompanyInput {
-    name: String!
-  }
-
   enum Role {
     USER
     ADMIN
     SUPER_ADMIN
+  }
+
+  input createCompanyInput {
+    name: String!
   }
 
   input RegisterUserInput {
@@ -69,9 +69,9 @@ const typeDefs = gql`
     companyId: String!
     first_name: String!
     last_name: String!
-    username: String!
+    username: String
     password: String!
-    access: Role!
+    access: Role
   }
 
   input LoginAdminUserInput {
@@ -83,13 +83,14 @@ const typeDefs = gql`
     companies: [Company!]!
     company(email: String): Company!
     adminUser(id: String!): User!
+    findMembers(companyId: String): Company!
   }
 
   type Mutation {
-    createNewCompany(input: CreateNewCompanyInput!): Company!
+    createCompany(input: createCompanyInput!): Company!
     registerUser(input: RegisterUserInput!): User!
     loginAdmin(input: LoginAdminUserInput!): User!
-    createTeamMember(input: String!): User!
+    registerMember(input: RegisterUserInput!): User!
   }
 `;
 
@@ -132,28 +133,41 @@ const resolvers = {
           "ADMIN_USER_FETCH_FAILED"
         );
       }
+    },
+    findMembers: async (_, args) => {
+      const companyId = args.companyId;
+      try {
+        const members = await prisma.company.findFirst({
+          where: { id: companyId },
+          include: { users: true }
+        });
+        if (!members) {
+          throw new ApolloError("No Members");
+        }
+        console.log(members);
+        return members;
+      } catch (err) {
+        throw new ApolloError(
+          "Could not retrieve data, please try again",
+          "FAILED__TO_FIND_MEMBERS"
+        );
+      }
     }
   },
   Mutation: {
-    createNewCompany: async (_, args) => {
+    createCompany: async (_, args) => {
+      console.log("here");
       try {
         let { name } = args.input;
-        // if missing credentials notify user
-        // check for existing user
         const existingCompany = await prisma.company.findFirst({
           where: { name: name }
         });
         if (existingCompany) {
           throw new UserInputError("Company already exists");
         }
-        //Password hashing
-        // const salt = await bcrypt.genSalt(10);
-        // password = await bcrypt.hash(password, salt);
         const newCompany = await prisma.company.create({
           data: { name }
         });
-        // generate token
-        // return user and token session
         return newCompany;
       } catch (err) {
         throw new UserInputError("Unable to create company.");
@@ -173,9 +187,10 @@ const resolvers = {
           where: { email: email }
         });
         if (existingUser) {
-          throw new ApolloError("User already exists", "USER_ALREADY_EXISTS");
+          throw new ApolloError("User already exists");
         }
         const passwordHash = await bcrypt.hash(password, 10);
+
         let user = await prisma.user.create({
           data: {
             email,
@@ -196,7 +211,6 @@ const resolvers = {
         const { password: newPassword, ...rest } = user;
         return rest;
       } catch (err) {
-        console.log(err);
         throw new ApolloError("Unable to register user.");
       }
     },
@@ -248,11 +262,40 @@ const resolvers = {
         throw new ApolloError("Unable to log in", "LOGIN_FAILED");
       }
     },
-    createTeamMember: async (_, args) => {
+    registerMember: async (_, args) => {
+      const { email, companyId, password, first_name, last_name } = args.input;
       try {
-        console.log("fired");
+        const existingUser = await prisma.user.findFirst({
+          where: { email: email }
+        });
+        if (existingUser) {
+          throw new ApolloError("User already exists", "USER_ALREADY_EXISTS");
+        }
+        const passwordHash = await bcrypt.hash(password, 10);
+        let user = await prisma.user.create({
+          data: {
+            email,
+            password: passwordHash,
+            companyId,
+            first_name,
+            last_name,
+            access: "USER"
+          }
+        });
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+        user = await prisma.user.update({
+          where: { email: email },
+          data: { token: token }
+        });
+
+        const { password: newPassword, ...rest } = user;
+        return rest;
       } catch (err) {
-        throw new ApolloError("failed");
+        throw new ApolloError(
+          "Unable to register user.",
+          "UNABLE_TO_REGISTER_MEMBER"
+        );
       }
     }
   }

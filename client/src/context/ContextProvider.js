@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ApolloClient,
   createHttpLink,
@@ -29,7 +29,7 @@ const client = new ApolloClient({
 });
 
 const ContextProvider = ({ children }) => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(localStorage.getItem("userId"));
   return (
     <ApolloProvider client={client}>
       <UserContext.Provider value={[user, setUser]}>

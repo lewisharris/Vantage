@@ -8,6 +8,8 @@ import { useLoginAdmin, useRegisterUser } from "../../hooks/account";
 import { AdminLogin } from "../../types/auth";
 import { useRouter } from "next/navigation";
 import UserContext from "../../context/UserContext";
+import CreateCompany from "../../components/temp/CreateCompany";
+import { ApolloError } from "@apollo/client/errors";
 
 export default function LoginForm() {
   const { push } = useRouter();
@@ -15,6 +17,7 @@ export default function LoginForm() {
   const [user] = useContext(UserContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const userId = localStorage.getItem("userID");
 
   useEffect(() => {
     if (user) {
@@ -23,38 +26,39 @@ export default function LoginForm() {
   }, [user]);
   const [onLogin, { data, loading, error }] = useLoginAdmin({
     onCompleted: (data: AdminLogin) => {
-      const { token, id } = data?.loginAdmin;
-      login(token, id);
+      const { token, id, companyId } = data?.loginAdmin;
+      login(token, id, companyId);
       push("/dashboard");
     },
-    onError: (error) => {
+    onError: error => {
       return error;
-    },
+    }
   });
 
-  const [onRegister, { data: registerData, error: registerError }] =
-    useRegisterUser({
-      onCompleted: () => {
-        console.log(registerData);
-      },
-    });
-
-  if (error) {
-    console.log(error);
-  }
+  const [
+    onRegister,
+    { data: registerData, error: registerError }
+  ] = useRegisterUser({
+    onCompleted: registerData => {
+      console.log(registerData);
+    },
+    onError: (error: ApolloError) => {
+      console.log(error);
+    }
+  });
 
   const handleSubmit = () => {
     onLogin({
       variables: {
-        input: { email, password: password },
-      },
+        input: { email, password: password }
+      }
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setEmail(event.target.value);
   };
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = event => {
     setPassword(event.target.value);
   };
 
@@ -62,15 +66,15 @@ export default function LoginForm() {
     onRegister({
       variables: {
         input: {
-          email: "joebloggs@email.com",
-          companyId: "4",
-          first_name: "joe",
-          last_name: "bloggs",
-          username: "jbloggs",
+          email: "member1@email.com",
+          companyId: "c48c3046-ebb7-4f57-93a0-193d797c33cb",
+          first_name: "member",
+          last_name: "one",
+          username: "memb1",
           password: "password",
-          access: "ADMIN",
-        },
-      },
+          access: "ADMIN"
+        }
+      }
     });
   };
 
@@ -85,6 +89,7 @@ export default function LoginForm() {
           className="flex flex-col text-center grow items-center justify-center"
         >
           <button onClick={handleRegister}>Register user</button>
+          <CreateCompany />
           {registerError ? <div>{registerError.message}</div> : null}
           <form className="flex flex-col w-3/4 mb-4 ">
             <motion.div
@@ -156,7 +161,7 @@ export default function LoginForm() {
               className={`p-2 w-content ${
                 loading ? "bg-violet-300" : "bg-violet-600"
               } text-white rounded-full`}
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 handleSubmit();
               }}

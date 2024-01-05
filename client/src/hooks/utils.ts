@@ -30,7 +30,6 @@ export const useAuth = () => {
   const [user, setUser] = useContext(UserContext);
 
   const loggedIn = () => {
-    console.log(user);
     const localToken = getItem("token");
     if (!localToken || !user) {
       removeItem("token");
@@ -39,10 +38,11 @@ export const useAuth = () => {
     }
   };
 
-  const login = (token: string, userID: string) => {
+  const login = (token: string, userID: string, companyId: string) => {
     if (token && userID) {
       setItem("token", token);
-      setItem("userID", userID);
+      setItem("userId", userID);
+      setItem("companyId", companyId);
       setUser(userID);
       push("/dashboard");
     }
@@ -52,7 +52,7 @@ export const useAuth = () => {
     push("/login");
     setUser("");
     removeItem("token");
-    removeItem("UserID");
+    removeItem("UserId");
   };
   return { loggedIn, login, logout };
 };
