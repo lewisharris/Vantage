@@ -9,7 +9,7 @@ export default function MembersList(): ReactElement {
   const companyId = localStorage.getItem("companyId");
 
   useEffect(() => {
-    fetchMembers(fetchOptions);
+    findMembers(fetchOptions);
   }, []);
 
   let fetchOptions = {
@@ -17,7 +17,7 @@ export default function MembersList(): ReactElement {
     fetchPolicy: "cache-and-network"
   };
 
-  const [fetchMembers, { data, loading }] = useFindMembers();
+  const [findMembers, { data, loading }] = useFindMembers();
 
   const members: [User] = data?.findMembers.users;
 
@@ -33,7 +33,7 @@ export default function MembersList(): ReactElement {
         <button
           disabled={loading}
           onClick={() => {
-            fetchMembers(fetchOptions);
+            findMembers(fetchOptions);
           }}
         >
           <Image
@@ -45,7 +45,7 @@ export default function MembersList(): ReactElement {
         </button>
       </div>
       {loading ? (
-        <p className="text-center text-xl pt-40">Loading...</p>
+        <p className="text-center text-xl my-auto">Loading...</p>
       ) : members && !isExpandedView ? (
         <>
           <table
@@ -91,9 +91,9 @@ export default function MembersList(): ReactElement {
               })}
             </tbody>
           </table>
-          <div className="flex flex-row justify-between py-4 mt-auto">
+          <div className="flex flex-row justify-between mt-auto">
             <button>Prev</button>
-            <select className="px-6 py-4">
+            <select className="px-6">
               <option>25</option>
               <option>50</option>
               <option>100</option>
@@ -113,7 +113,7 @@ export default function MembersList(): ReactElement {
           </button>
         </div>
       ) : (
-        <div className="text-center text-xl pt-40">
+        <div className="text-center text-xl my-auto">
           Unable to retrieve members...
         </div>
       )}
