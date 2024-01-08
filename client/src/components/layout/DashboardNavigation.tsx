@@ -49,7 +49,7 @@ export default function DashboardNavigation({}: Props) {
     <nav
       className={`${
         isExpanded ? "w-full sm:w-fit" : "w-full sm:w-14"
-      } transition-all sm:overflow-hidden justify-between bg-white flex flex-row sm:flex-col h-fill sm:h-[calc(100vh-56px)] shadow-md shadow-slate-300 fixed bottom-0 sm:relative`}
+      } transition-all shrink-0 sm:overflow-hidden justify-between bg-white flex flex-row sm:flex-col h-fill sm:h-[calc(100vh-56px)] shadow-md shadow-slate-300 fixed bottom-0 sm:relative`}
     >
       <Link
         href="/dashboard/profile-settings"
