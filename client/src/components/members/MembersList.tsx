@@ -27,9 +27,25 @@ export default function MembersList(): ReactElement {
 
   return (
     <div className="flex flex-col grow">
-      <div className="flex flex-row justify-between gap-4">
-        <button>Filter</button>
-        <button className="mr-auto">Sort</button>
+      <div className="flex flex-row justify-between gap-6">
+        <button className="flex flex-row gap-2 items-center">
+          Filter
+          <Image
+            src="/assets/svg/filter.svg"
+            alt="filter"
+            height={20}
+            width={20}
+          />
+        </button>
+        <button className="flex flex-row gap-2 mr-auto items-center">
+          Sort
+          <Image
+            src="/assets/svg/sort.svg"
+            alt="filter"
+            height={20}
+            width={20}
+          />
+        </button>
         <button
           disabled={loading}
           onClick={() => {
@@ -38,6 +54,7 @@ export default function MembersList(): ReactElement {
         >
           <Image
             src="/assets/svg/refreshIcon.svg"
+            alt="refresh"
             height={24}
             width={24}
             className={`${loading ? "animate-spin" : null}`}
@@ -83,7 +100,12 @@ export default function MembersList(): ReactElement {
                           toggleExpandedView(id);
                         }}
                       >
-                        ->
+                        <Image
+                          src="/assets/svg/arrow-right.svg"
+                          alt="open"
+                          height={14}
+                          width={14}
+                        />
                       </button>
                     </td>
                   </tr>
@@ -92,13 +114,29 @@ export default function MembersList(): ReactElement {
             </tbody>
           </table>
           <div className="flex flex-row justify-between mt-auto">
-            <button>Prev</button>
-            <select className="px-6">
+            <button>
+              <Image
+                src="/assets/svg/prev.svg"
+                alt="prev"
+                width={20}
+                height={20}
+                className="m-4"
+              />
+            </button>
+            <select className="sm:px-6">
               <option>25</option>
               <option>50</option>
               <option>100</option>
             </select>
-            <button>Next</button>
+            <button>
+              <Image
+                src="/assets/svg/next.svg"
+                alt="next"
+                width={20}
+                height={20}
+                className="m-4"
+              />
+            </button>
           </div>
         </>
       ) : members && isExpandedView ? (

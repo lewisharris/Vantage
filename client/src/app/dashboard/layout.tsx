@@ -21,7 +21,7 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="bg-slate-100 flex flex-row w-screen">
+      <div className="bg-slate-100 flex flex-row w-screen overflow-scroll">
         <DashboardNavigation />
         {children}
       </div>

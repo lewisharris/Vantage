@@ -15,16 +15,18 @@ const Icon = ({ src, alt, title, link }: IconProps) => {
   return (
     <Link
       href={link}
-      className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center hover:bg-violet-200 hover:text-violet-900"
+      className="p-4 flex flex-row cursor-pointer text-gray-600 items-center hover:bg-violet-200 hover:text-violet-900"
     >
       <Image
         src={src}
         alt={alt}
-        width={0}
-        height={0}
-        className="w-6 h-fit opacity-70"
+        width={20}
+        height={20}
+        className="opacity-70"
       />
-      <span className="pr-4 ml-6 flex flex-row flex-nowrap">{alt}</span>
+      <span className="pr-4 ml-6 flex flex-row flex-nowrap hidden sm:inline">
+        {alt}
+      </span>
     </Link>
   );
 };
@@ -44,14 +46,14 @@ export default function DashboardNavigation({}: Props) {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   return (
-    <div
+    <nav
       className={`${
-        isExpanded ? "w-fit" : "w-screen sm:w-14"
-      } shrink-0 transition-all grow-0 overflow-hidden bg-white flex flex-row sm:flex-col h-[calc(100vh-56px)] shadow-md shadow-slate-300`}
+        isExpanded ? "w-full sm:w-fit" : "w-full sm:w-14"
+      } transition-all sm:overflow-hidden justify-between bg-white flex flex-row sm:flex-col h-fill sm:h-[calc(100vh-56px)] shadow-md shadow-slate-300 fixed bottom-0 sm:relative`}
     >
       <Link
         href="/dashboard/profile-settings"
-        className="my-8 mx-auto text-center font-bold w-8 h-8 text-xs flex flex-row items-center justify-center rounded-full text-lg bg-violet-400"
+        className="hidden my-8 mx-auto text-center font-bold w-8 h-8 text-xs sm:flex flex-row items-center justify-center rounded-full text-lg bg-violet-400"
       >
         {data?.adminUser?.company?.name
           ? data.adminUser.company.name.charAt(0)
@@ -63,7 +65,7 @@ export default function DashboardNavigation({}: Props) {
             onClick={() => {
               setIsExpanded(false);
             }}
-            className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
+            className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill hidden sm:inline"
           >
             <img
               className="w-6 h-fit opacity-70"
@@ -78,7 +80,7 @@ export default function DashboardNavigation({}: Props) {
           onClick={() => {
             setIsExpanded(true);
           }}
-          className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill"
+          className="p-4 auto flex flex-row cursor-pointer text-gray-600 items-center w-fill hidden sm:inline"
         >
           <img
             className="w-6 h-fit opacity-70"
@@ -99,19 +101,28 @@ export default function DashboardNavigation({}: Props) {
         alt="Members"
         link="/dashboard/members"
       />
+      <Link href="/dashboard/scan">
+        <Image
+          src="/assets/svg/qr.svg"
+          alt="scan-qr-code"
+          width={60}
+          height={50}
+          className="cursor-pointer border-solid border-black rounded-full bg-white absolute bottom-8 left-[50vw] z-30 -translate-x-8 p-4 border-solid border-pink-500 border-2"
+        />
+      </Link>
       <Icon src="/assets/svg/team.svg" alt="Teams" link="/dashboard/my-teams" />
       <Icon
         src="/assets/svg/card.svg"
         alt="Transactions"
         link="/dashboard/transactions"
       />
-      <div className="mt-auto">
+      <div className="inline sm:m-auto">
         <Icon
           src="/assets/svg/settings.svg"
           alt="Settings"
           link="/dashboard/settings"
         />
       </div>
-    </div>
+    </nav>
   );
 }

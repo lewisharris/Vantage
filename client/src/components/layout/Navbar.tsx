@@ -1,5 +1,6 @@
 "use client";
 import React, { useContext } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../../hooks/utils";
@@ -21,13 +22,24 @@ export default function Navbar({}: Props) {
         VANTAGE
       </Link>
       {user ? (
-        <Link
-          href="/login"
-          className="hidden sm:inline mx-8 text-violet-800"
-          onClick={() => logout()}
-        >
-          Log out
-        </Link>
+        <>
+          <Link href="/dashboard/scan" className="flex flex-row mr-auto">
+            Scan
+            <Image
+              src="/assets/svg/qr.svg"
+              alt="scan-qr-code"
+              width={60}
+              height={60}
+            />
+          </Link>
+          <Link
+            href="/login"
+            className="hidden sm:inline mx-8 text-violet-800"
+            onClick={() => logout()}
+          >
+            Log out
+          </Link>
+        </>
       ) : (
         <>
           <Link
