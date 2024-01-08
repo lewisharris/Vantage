@@ -8,10 +8,6 @@ export default function MembersList(): ReactElement {
   const [isExpandedView, setIsExpandedView] = useState<boolean>(false);
   const companyId = localStorage.getItem("companyId");
 
-  useEffect(() => {
-    findMembers(fetchOptions);
-  }, []);
-
   let fetchOptions = {
     variables: { input: companyId },
     fetchPolicy: "cache-and-network"
@@ -20,6 +16,10 @@ export default function MembersList(): ReactElement {
   const [findMembers, { data, loading }] = useFindMembers();
 
   const members: [User] = data?.findMembers.users;
+
+  useEffect(() => {
+    findMembers(fetchOptions);
+  }, [members]);
 
   const toggleExpandedView = (userId: string) => {
     setIsExpandedView(true);
@@ -83,7 +83,7 @@ export default function MembersList(): ReactElement {
                           toggleExpandedView(id);
                         }}
                       >
-                        +
+                        ->
                       </button>
                     </td>
                   </tr>
