@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useGetAdminUser } from "../../hooks/account";
 import UserContext from "../../context/UserContext";
+import { usePathname } from "next/navigation";
+import path from "path";
 
 type IconProps = {
   link: string;
@@ -34,14 +36,15 @@ const Icon = ({ src, alt, title, link }: IconProps) => {
 type Props = {};
 
 export default function DashboardNavigation({}: Props) {
+  const pathname = usePathname();
   const [user] = useContext(UserContext);
   const { data, loading, error } = useGetAdminUser({
     variables: {
-      input: user
+      input: user,
     },
-    onError: error => {
+    onError: (error) => {
       return error;
-    }
+    },
   });
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -101,9 +104,21 @@ export default function DashboardNavigation({}: Props) {
         alt="Members"
         link="/dashboard/members"
       />
-      <Link href="/dashboard/scan">
+      <Link
+        href={`${
+          pathname === "/dashboard/scan/" ||
+          pathname === "/dashboard/scan/confirm"
+            ? "/dashboard"
+            : "/dashboard/scan"
+        }`}
+      >
         <Image
-          src="/assets/svg/qr.svg"
+          src={`${
+            pathname === "/dashboard/scan/" ||
+            pathname === "/dashboard/scan/confirm"
+              ? "/assets/svg/cancel.svg"
+              : "/assets/svg/qr.svg"
+          }`}
           alt="scan-qr-code"
           width={60}
           height={50}

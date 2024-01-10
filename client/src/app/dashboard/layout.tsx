@@ -10,7 +10,7 @@ import UserContext from "../../context/UserContext";
 import { useAuth } from "../../hooks/utils";
 
 export default function DashboardLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

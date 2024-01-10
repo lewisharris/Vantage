@@ -251,6 +251,11 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-20.6.3.tgz"
   integrity sha512-HksnYH4Ljr4VQgEy2lTStbCKv/P590tmPe5HqOnv9Gprffgv5WXAY+Y5Gqniu0GGqeTCUdBnzC3QSrzPkBkAMA==
 
+"@types/offscreencanvas@^2019.6.4":
+  version "2019.7.3"
+  resolved "https://registry.yarnpkg.com/@types/offscreencanvas/-/offscreencanvas-2019.7.3.tgz#90267db13f64d6e9ccb5ae3eac92786a7c77a516"
+  integrity sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==
+
 "@types/prop-types@*":
   version "15.7.6"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.6.tgz"
@@ -349,6 +354,20 @@
   integrity sha512-I6bHwH0fSf6RqQcnnXLJKhkSXG45MFral3GxPaY4uAl0LYDZM+YDVDAiU9bYwjTuysy1S0IeecWtmq1SZA3M1w==
   dependencies:
     tslib "^2.3.0"
+
+"@zxing/library@^0.19.1":
+  version "0.19.3"
+  resolved "https://registry.yarnpkg.com/@zxing/library/-/library-0.19.3.tgz#8f8fb119edac43c109e7d74ae240daba04b7f44f"
+  integrity sha512-RUv5svewpDoD0ymXleOP8yVTO5BLkR0zn5coGC/Vs1671u0OBJ4xdtR8WVWf08OcvrieEMHdSfQY3ZKtqII/hg==
+  dependencies:
+    ts-custom-error "^3.2.1"
+  optionalDependencies:
+    "@zxing/text-encoding" "~0.9.0"
+
+"@zxing/text-encoding@~0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@zxing/text-encoding/-/text-encoding-0.9.0.tgz#fb50ffabc6c7c66a0c96b4c03e3d9be74864b70b"
+  integrity sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -2169,6 +2188,13 @@ punycode@^2.1.0:
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.0.tgz"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
+qr-scanner@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/qr-scanner/-/qr-scanner-1.4.2.tgz#bc4fb88022a8c9be95c49527a1c8fb8724b47dc4"
+  integrity sha512-kV1yQUe2FENvn59tMZW6mOVfpq9mGxGf8l6+EGaXUOd4RBOLg7tRC83OrirM5AtDvZRpdjdlXURsHreAOSPOUw==
+  dependencies:
+    "@types/offscreencanvas" "^2019.6.4"
+
 queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
@@ -2191,6 +2217,14 @@ react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-qr-scanner@^1.0.0-alpha.11:
+  version "1.0.0-alpha.11"
+  resolved "https://registry.yarnpkg.com/react-qr-scanner/-/react-qr-scanner-1.0.0-alpha.11.tgz#9ba14b4aaf2254bd93c81b0dbc7e2c2c6b007d2e"
+  integrity sha512-TdaygL+4U9iapskJgK5Ilb1Cw4wwzQ3bVpIfzzbrEsxPaEJzmjQ7VuMz8E9hBQGCU4Ee+YtgglE3byEtgtRpkA==
+  dependencies:
+    "@zxing/library" "^0.19.1"
+    prop-types "^15.8.1"
 
 react@18.2.0:
   version "18.2.0"
@@ -2538,6 +2572,11 @@ ts-api-utils@^1.0.1:
   version "1.0.3"
   resolved "https://registry.npmjs.org/ts-api-utils/-/ts-api-utils-1.0.3.tgz"
   integrity sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==
+
+ts-custom-error@^3.2.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-3.3.1.tgz#8bd3c8fc6b8dc8e1cb329267c45200f1e17a65d1"
+  integrity sha512-5OX1tzOjxWEgsr/YEUWSuPrQ00deKLh6D7OTWcvNHm12/7QPyRh8SYpyWvA4IZv8H/+GQWQEh/kwo95Q9OVW1A==
 
 ts-interface-checker@^0.1.9:
   version "0.1.13"

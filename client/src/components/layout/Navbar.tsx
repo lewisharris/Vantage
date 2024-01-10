@@ -23,7 +23,10 @@ export default function Navbar({}: Props) {
       </Link>
       {user ? (
         <>
-          <Link href="/dashboard/scan" className="flex flex-row mr-auto">
+          <Link
+            href="/dashboard/scan"
+            className="sm:flex flex-row mr-auto hidden"
+          >
             Scan
             <Image
               src="/assets/svg/qr.svg"
