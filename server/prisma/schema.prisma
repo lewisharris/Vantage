@@ -39,6 +39,8 @@ model User {
   last_name  String
   username   String? @unique
   location   String?
+  contactNumber Int?
+  activePoints Int @default(0)
   access     String
 }
 
