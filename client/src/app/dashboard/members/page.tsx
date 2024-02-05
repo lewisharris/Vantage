@@ -6,14 +6,14 @@ type Props = {};
 
 export default function Members({}: Props) {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full mb-14 sm:mb-auto">
       <div className="bg-white p-4 rounded-lg m-4 w-fill flex flex-row justify-between">
         <CreateClient />
-        <button className="bg-indigo-600 text-white p-4 rounded-xl">
-          Search members
+        <button className="bg-indigo-600 text-white py-2 px-4 rounded-xl">
+          Search
         </button>
-        <button className="bg-indigo-600 text-white p-4 rounded-xl">
-          Export members
+        <button className="bg-indigo-600 text-white py-2 px-4 rounded-xl">
+          Export
         </button>
       </div>
       <div className="bg-white p-4 rounded-lg m-4 w-fill flex flex-col justify-start grow gap-4">
