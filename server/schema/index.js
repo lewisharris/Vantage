@@ -110,7 +110,7 @@ const resolvers = {
       try {
         const company = await prisma.company.findFirst({
           where: { email: email },
-          include: { teams: true }
+          include: { teams: true },
         });
         return company;
       } catch (err) {
@@ -122,7 +122,7 @@ const resolvers = {
       try {
         const user = await prisma.user.findFirst({
           where: { id: id },
-          include: { company: true }
+          include: { company: true },
         });
         if (user.access === "USER" || null) {
           throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
@@ -156,12 +156,11 @@ const resolvers = {
       try {
         const members = await prisma.company.findFirst({
           where: { id: companyId },
-          include: { users: true }
+          include: { users: true },
         });
         if (!members) {
           throw new ApolloError("No Members");
         }
-        console.log(members);
         return members;
       } catch (err) {
         throw new ApolloError(
@@ -169,7 +168,7 @@ const resolvers = {
           "FAILED__TO_FIND_MEMBERS"
         );
       }
-    }
+    },
   },
   Mutation: {
     createCompany: async (_, args) => {
@@ -177,13 +176,13 @@ const resolvers = {
       try {
         let { name } = args.input;
         const existingCompany = await prisma.company.findFirst({
-          where: { name: name }
+          where: { name: name },
         });
         if (existingCompany) {
           throw new UserInputError("Company already exists");
         }
         const newCompany = await prisma.company.create({
-          data: { name }
+          data: { name },
         });
         return newCompany;
       } catch (err) {
@@ -191,17 +190,11 @@ const resolvers = {
       }
     },
     registerUser: async (_, args) => {
-      const {
-        email,
-        companyId,
-        password,
-        first_name,
-        last_name,
-        access
-      } = args.input;
+      const { email, companyId, password, first_name, last_name, access } =
+        args.input;
       try {
         const existingUser = await prisma.user.findFirst({
-          where: { email: email }
+          where: { email: email },
         });
         if (existingUser) {
           throw new ApolloError("User already exists");
@@ -215,14 +208,14 @@ const resolvers = {
             companyId,
             first_name,
             last_name,
-            access
-          }
+            access,
+          },
         });
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         user = await prisma.user.update({
           where: { email: email },
-          data: { token: token }
+          data: { token: token },
         });
 
         const { password: newPassword, ...rest } = user;
@@ -254,7 +247,7 @@ const resolvers = {
 
       try {
         let user = await prisma.user.findFirst({
-          where: { email: email }
+          where: { email: email },
         });
         if (!user) {
           throw new ApolloError(
@@ -272,7 +265,7 @@ const resolvers = {
         let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         user = await prisma.user.update({
           where: { email: email.toLowerCase() },
-          data: { token: token }
+          data: { token: token },
         });
         return user;
       } catch (err) {
@@ -283,7 +276,7 @@ const resolvers = {
       const { email, companyId, password, first_name, last_name } = args.input;
       try {
         const existingUser = await prisma.user.findFirst({
-          where: { email: email }
+          where: { email: email },
         });
         if (existingUser) {
           throw new ApolloError("User already exists", "USER_ALREADY_EXISTS");
@@ -296,14 +289,14 @@ const resolvers = {
             companyId,
             first_name,
             last_name,
-            access: "USER"
-          }
+            access: "USER",
+          },
         });
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
         user = await prisma.user.update({
           where: { email: email },
-          data: { token: token }
+          data: { token: token },
         });
 
         const { password: newPassword, ...rest } = user;
@@ -314,8 +307,8 @@ const resolvers = {
           "UNABLE_TO_REGISTER_MEMBER"
         );
       }
-    }
-  }
+    },
+  },
 };
 
 export { typeDefs, resolvers };
