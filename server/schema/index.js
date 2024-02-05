@@ -84,6 +84,7 @@ const typeDefs = gql`
     company(email: String): Company!
     adminUser(id: String!): User!
     findMembers(companyId: String): Company!
+    getUser(id: String!): User!
   }
 
   type Mutation {
@@ -126,6 +127,22 @@ const resolvers = {
         if (user.access === "USER" || null) {
           throw new ApolloError("Unauthorized", "UNAUTHORIZED_ADMIN");
         }
+        return user;
+      } catch (err) {
+        throw new ApolloError(
+          "Failed to fetch user data",
+          "ADMIN_USER_FETCH_FAILED"
+        );
+      }
+    },
+    getUser: async (_, args) => {
+      console.log("fired");
+      const id = args.id;
+      try {
+        const user = await prisma.user.findFirst({
+          where: { id: id },
+          include: { company: true }
+        });
         return user;
       } catch (err) {
         throw new ApolloError(

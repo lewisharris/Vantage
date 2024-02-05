@@ -1,11 +1,37 @@
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { gql, useQuery } from "@apollo/client";
 
 type Props = {};
 
 export default function page({}: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("search");
+  console.log("params" + search);
+
+  const userId = "10";
+
+  const USER_DETAILS = gql`
+    query getUser($input: String) {
+      getUser(id: $input) {
+        id
+        first_name
+        last_name
+      }
+    }
+  `;
+
+  const { data, loading, error } = useQuery(USER_DETAILS, {
+    variables: { $input: userId }
+  });
+  console.log(data);
+  if (error) {
+    console.log(error);
+  }
+
   const handleSubmit = () => {
     // have pop up that confirms transaction will be completed
     // toast on confirmation

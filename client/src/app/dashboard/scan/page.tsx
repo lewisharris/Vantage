@@ -8,10 +8,10 @@ interface Props {}
 export default function scan({}: Props): ReactElement {
   const router = useRouter();
   const delay = 100;
-  const handleError = (err) => {
+  const handleError = err => {
     console.error(err);
   };
-  const handleScan = (data) => {
+  const handleScan = data => {
     if (data) {
       router.push("/dashboard/scan/confirm");
     }

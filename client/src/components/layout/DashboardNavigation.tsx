@@ -40,11 +40,11 @@ export default function DashboardNavigation({}: Props) {
   const [user] = useContext(UserContext);
   const { data, loading, error } = useGetAdminUser({
     variables: {
-      input: user,
+      input: user
     },
-    onError: (error) => {
+    onError: error => {
       return error;
-    },
+    }
   });
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -131,7 +131,7 @@ export default function DashboardNavigation({}: Props) {
         alt="Transactions"
         link="/dashboard/transactions"
       />
-      <div className="inline sm:m-auto">
+      <div className="inline sm:my-auto">
         <Icon
           src="/assets/svg/settings.svg"
           alt="Settings"
